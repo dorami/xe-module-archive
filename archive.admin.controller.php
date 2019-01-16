@@ -11,8 +11,8 @@
 		}
 
 		function procArchiveAdminInsert() {
-			$oModuleController = &getController('module');
-			$oModuleModel = &getModel('module');
+			$oModuleController = getController('module');
+			$oModuleModel = getModel('module');
 
 			$args = Context::getRequestVars();
 			$args->module = 'archive';
@@ -50,7 +50,7 @@
 		}
 
 		function procArchiveAdminDelete() {
-			$oModuleController = &getController('module');
+			$oModuleController = getController('module');
 
 			$args->module_srl = $module_srl = Context::get('module_srl');
 
@@ -78,9 +78,9 @@
 		}
 
 		function procArchiveAdminDeletePackage() {
-			$oArchiveModel = &getModel('archive');
-			$oDocumentController = &getController('document');
-			$oFileController = &getController('file');
+			$oArchiveModel = getModel('archive');
+			$oDocumentController = getController('document');
+			$oFileController = getController('file');
 
 			$site_module_info = Context::get('site_module_info');
 			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');

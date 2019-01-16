@@ -1,11 +1,11 @@
 <?php
-	$oArchiveView = &getView('archive');
+	$oArchiveView = getView('archive');
 
 	class archiveMobile extends archiveView {
 
 		function init()
 		{
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			 Context::set('categories', $oDocumentModel->getCategoryList($this->module_srl));
 
 			$template_path = sprintf("%sm.skins/%s/",$this->module_path, $this->module_info->mskin);
@@ -27,7 +27,7 @@
 
 		function dispArchiveCategory()
 		{
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			Context::set('category_list', $oDocumentModel->getCategoryList($this->module_srl));
 			$this->setTemplateFile('category.html');
 		}

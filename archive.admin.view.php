@@ -8,7 +8,7 @@
 	class archiveAdminView extends archive {
 
 		function init() {
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$module_category = $oModuleModel->getModuleCategories();
 			Context::set('module_category', $module_category);
 
@@ -55,8 +55,8 @@
 		}
 
 		function dispArchiveAdminInsert() {
-			$oModuleModel = &getModel('module');
-			$oLayoutModel = &getModel('layout');
+			$oModuleModel = getModel('module');
+			$oLayoutModel = getModel('layout');
 
 			Context::set('skin_list', $oModuleModel->getSkins($this->module_path));
 			Context::set('layout_list', $oLayoutModel->getLayoutList());
@@ -69,12 +69,12 @@
 		}
 
 		function dispArchiveAdminCategory() {
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			Context::set('category_content', $oDocumentModel->getCategoryHTML($this->module_info->module_srl));
 		}
 
 		function dispArchiveAdminGrant() {
-			$oModuleAdminModel = &getAdminModel('module');
+			$oModuleAdminModel = getAdminModel('module');
 			Context::set('grant_content', $oModuleAdminModel->getModuleGrantHTML($this->module_info->module_srl, $this->xml_info->grant));
 		}
 
@@ -87,7 +87,7 @@
 		}
 
 		function dispArchiveAdminSkin() {
-			$oModuleAdminModel = &getAdminModel('module');
+			$oModuleAdminModel = getAdminModel('module');
 			Context::set('skin_content', $oModuleAdminModel->getModuleSkinHTML($this->module_info->module_srl));
 
 			$security = new Security();
@@ -95,7 +95,7 @@
 		}
 
 		function dispArchiveAdminMobileSkin() {
-			$oModuleAdminModel = &getAdminModel('module');
+			$oModuleAdminModel = getAdminModel('module');
 			Context::set('skin_content', $oModuleAdminModel->getModuleMobileSkinHTML($this->module_info->module_srl));
 
 			$security = new Security();
@@ -104,7 +104,7 @@
 
 
 		function dispArchiveAdminDelete() {
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 
 			if(!$this->module_info) return new Object(-1,'msg_invalid_request');
 

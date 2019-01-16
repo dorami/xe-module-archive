@@ -11,7 +11,7 @@
 
 
 		function moduleInstall() {
-			$oModuleController = &getController('module');
+			$oModuleController = getController('module');
 
 			$oModuleController->insertTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after');
 			$oModuleController->insertTrigger('menu.getModuleListInSitemap', 'archive', 'model', 'triggerModuleListInSitemap', 'after');
@@ -19,7 +19,7 @@
 		}
 
 		function checkUpdate() {
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 
 			if(!$oModuleModel->getTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after')) return true;
 			// 2012. 09. 11 when add new menu in sitemap, custom menu add
@@ -28,8 +28,8 @@
 		}
 
 		function moduleUpdate() {
-			$oModuleController = &getController('module');
-			$oModuleModel = &getModel('module');
+			$oModuleController = getController('module');
+			$oModuleModel = getModel('module');
 
 			if(!$oModuleModel->getTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after'))
 				$oModuleController->insertTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after');
@@ -41,7 +41,7 @@
 		}
 
 		function moduleUninstall() {
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$oModuleController =& getController('module');
 			if($oModuleModel->getTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after'))
 				$oModuleController->deleteTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after');

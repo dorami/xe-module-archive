@@ -8,7 +8,7 @@
 	class archiveView extends archive {
 
 		function init() {
-			$oDocumentModel = &getModel('document');
+			$oDocumentModel = getModel('document');
 			Context::set('categories', $oDocumentModel->getCategoryList($this->module_srl));
 
 			$template_path = sprintf("%sskins/%s/",$this->module_path, $this->module_info->skin);
@@ -22,9 +22,9 @@
 		}
 
 		function dispArchiveIndex() {
-			$oArchiveModel = &getModel('archive');
-			$oDocumentModel = &getModel('document');
-			$oFileModel = &getModel('file');
+			$oArchiveModel = getModel('archive');
+			$oDocumentModel = getModel('document');
+			$oFileModel = getModel('file');
 
 			$document_srl = Context::get('document_srl');
 			$package_srl = Context::get('package_srl');
@@ -119,7 +119,7 @@
 		}
 
 		function dispArchiveModifyPackage() {
-			$oArchiveModel = &getModel('archive');
+			$oArchiveModel = getModel('archive');
 
 			$logged_info = Context::get('logged_info');
 			$package_srl = Context::get('package_srl');
@@ -136,7 +136,7 @@
 		}
 
 		function dispArchiveDeletePackage() {
-			$oArchiveModel = &getModel('archive');
+			$oArchiveModel = getModel('archive');
 
 			$logged_info = Context::get('logged_info');
 			$package_srl = Context::get('package_srl');
@@ -150,7 +150,7 @@
 		}
 
 		function dispArchivePackage() {
-			$oArchiveModel = &getModel('archive');
+			$oArchiveModel = getModel('archive');
 			$logged_info = Context::get('logged_info');
 			$package_srl = Context::get('package_srl');
 			if($package_srl) $selected_package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
@@ -166,7 +166,7 @@
 		}
 
 		function dispArchivePackageList() {
-			$oArchiveModel = &getModel('archive');
+			$oArchiveModel = getModel('archive');
 
 			$logged_info = Context::get('logged_info');
 			$output = $oArchiveModel->getPackageList($this->module_srl, null, Context::get('category_srl'), $logged_info->member_srl, Context::get('page'));
@@ -178,8 +178,8 @@
 		}
 
 		function dispArchiveAttach() {
-			$oArchiveModel = &getModel('archive');
-			$oEditorModel = &getModel('editor');
+			$oArchiveModel = getModel('archive');
+			$oEditorModel = getModel('editor');
 
 			$logged_info = Context::get('logged_info');
 			$package_srl = Context::get('package_srl');
@@ -201,10 +201,10 @@
 		}
 
 		function dispArchiveModifyAttach() {
-			$oArchiveModel = &getModel('archive');
-			$oFileController = &getController('file');
-			$oEditorModel = &getModel('editor');
-			$oDocumentModel = &getModel('document');
+			$oArchiveModel = getModel('archive');
+			$oFileController = getController('file');
+			$oEditorModel = getModel('editor');
+			$oDocumentModel = getModel('document');
 
 			$package_srl = Context::get('package_srl');
 			$item_srl = Context::get('item_srl');
@@ -229,7 +229,7 @@
 		}
 
 		function dispArchiveManage() {
-			$oArchiveModel = &getModel('archive');
+			$oArchiveModel = getModel('archive');
 
 			if(!$this->grant->manager) return new Object(-1,'msg_not_permitted');
 
@@ -249,7 +249,7 @@
 		}
 
 		function dispArchiveSearchDependency() {
-			$oArchiveModel = &getModel('archive');
+			$oArchiveModel = getModel('archive');
 
 			$category_srl = Context::get('category_srl');
 			$search_keyword = Context::get('search_keyword');

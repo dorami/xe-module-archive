@@ -47,7 +47,7 @@
 		}
 
 		function procArchiveModifyPackage() {
-			$oArchiveModel = &getModel('archive');
+			$oArchiveModel = getModel('archive');
 
 			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
 
@@ -82,7 +82,7 @@
 		}
 
 		function procArchiveDeletePackage() {
-			$oArchiveModel = &getModel('archive');
+			$oArchiveModel = getModel('archive');
 
 			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
 
@@ -115,8 +115,8 @@
 		}
 
 		function procArchiveChangeStatus() {
-			$oCommunicationController = &getController('communication');
-			$oArchiveModel = &getModel('archive');
+			$oCommunicationController = getController('communication');
+			$oArchiveModel = getModel('archive');
 
 			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
 
@@ -462,9 +462,9 @@
 		}
 
 		function procArchiveDeleteAttach() {
-			$oArchiveModel = &getModel('archive');
-			$oFileController = &getController('file');
-			$oDocumentController = &getController('document');
+			$oArchiveModel = getModel('archive');
+			$oFileController = getController('file');
+			$oDocumentController = getController('document');
 
 			$package_srl = Context::get('package_srl');
 			$item_srl = Context::get('item_srl');
@@ -502,7 +502,7 @@
 		}
 
 		function triggerUpdateDownloadedCount($obj) {
-			$oArchiveModel = &getModel('archive');
+			$oArchiveModel = getModel('archive');
 
 			$args->item_srl = $obj->upload_target_srl;
 			$output = executeQuery('archive.getItemByItemSrl', $args);
@@ -519,8 +519,8 @@
 		}
 
 		function procArchiveInsertComment() {
-			$oCommentController = &getController('comment');
-			$oArchiveModel = &getModel('archive');
+			$oCommentController = getController('comment');
+			$oArchiveModel = getModel('archive');
 
 			if(!$this->grant->write_comment) return new Object(-1, 'msg_not_permitted');
 			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
@@ -570,9 +570,9 @@
 		}
 
 		function procArchiveDeleteComment() {
-			$oCommentModel = &getModel('comment');
-			$oCommentController = &getController('comment');
-			$oArchiveModel = &getModel('archive');
+			$oCommentModel = getModel('comment');
+			$oCommentController = getController('comment');
+			$oArchiveModel = getModel('archive');
 
 			if(!$this->grant->write_comment) return new Object(-1, 'msg_not_permitted');
 			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');

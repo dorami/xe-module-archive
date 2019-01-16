@@ -13,14 +13,14 @@ class archiveAPI extends archive
 		if(!$site_srl) $site_srl = 0;
 		if(!$module_srl && $mid)
 		{
-			$oModuleModel = &getModel('module');
+			$oModuleModel = getModel('module');
 			$module_info = $oModuleModel->getModuleInfoByMid($mid, $site_srl);
 			$module_srl = $module_info->module_srl;
 		}
 
 		if(!$module_srl) return;
 
-		$oModel = &getModel('archive');
+		$oModel = getModel('archive');
 		$args->module_srl = $module_srl;
 		$args->package_srl = $package_srl;
 		if($list_count) $args->list_count = $list_count;
