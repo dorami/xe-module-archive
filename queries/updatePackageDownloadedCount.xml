@@ -1,6 +1,6 @@
 <query id="updatePackageDownloadedCount" action="update">
 	<tables>
-		<table name="resource_packages" />
+		<table name="archive_packages" />
 	</tables>
 	<columns>
 		<column name="downloaded" default="plus(1)" notnull="notnull" />

@@ -58,7 +58,7 @@
 					{$lang->package_update} {zdate($val->item_regdate, "Y-m-d H:i")}
 					/ {$lang->package_downloaded_count} : {number_format($val->package_downloaded)}
 					<!--@if($grant->manager)-->
-					[<a href="{getUrl('act','dispResourcePackage','package_srl',$val->package_srl)}">{$lang->cmd_modify}</a> |
+					[<a href="{getUrl('act','dispArchivePackage','package_srl',$val->package_srl)}">{$lang->cmd_modify}</a> |
 					<a href="#" onclick="if(confirm('{$lang->confirm_delete}')) doDeleteItem({$val->package_srl},{$val->item_srl}); return false;">{$lang->cmd_delete}</a>|
 					<!--@end-->
 				</li>

@@ -1,7 +1,7 @@
 <?php
-	$oResourceView = &getView('resource');
+	$oArchiveView = &getView('archive');
 
-	class resourceMobile extends resourceView {
+	class archiveMobile extends archiveView {
 
 		function init()
 		{
@@ -15,17 +15,17 @@
 			}
 			$this->setTemplatePath($template_path);
 
-			Context::addJsFile($this->module_path.'tpl/js/resource.js');
+			Context::addJsFile($this->module_path.'tpl/js/archive.js');
 		}
 
-		function dispResourceIndex()
+		function dispArchiveIndex()
 		{
-			parent::dispResourceIndex();
+			parent::dispArchiveIndex();
 			$this->setTemplateFile('index.html');
 		}
 
 
-		function dispResourceCategory()
+		function dispArchiveCategory()
 		{
 			$oDocumentModel = &getModel('document');
 			Context::set('category_list', $oDocumentModel->getCategoryList($this->module_srl));

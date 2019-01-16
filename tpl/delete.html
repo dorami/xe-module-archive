@@ -1,15 +1,15 @@
-<load target="filter/delete_resource.xml" />
+<load target="filter/delete_archive.xml" />
 <include target="_header.html" />
-<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/resource/tpl/delete/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/tpl/delete/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
 	<p>{$XE_VALIDATOR_MESSAGE}</p>
 </div>
-<form action="./" method="post" class="section" ruleset="deleteResource">
-	<input type="hidden" name="module" value="resource" />
-	<input type="hidden" name="act" value="procResourceAdminDelete" />
+<form action="./" method="post" class="section" ruleset="deleteArchive">
+	<input type="hidden" name="module" value="archive" />
+	<input type="hidden" name="act" value="procArchiveAdminDelete" />
 	<input type="hidden" name="page" value="{$page}" />
 	<input type="hidden" name="module_srl" value="{$module_info->module_srl}" />
-	<input type="hidden" name="success_return_url" value="{getUrl('act', 'dispResourceAdminList', 'module_srl', '')}" />
-	<input type="hidden" name="xe_validator_id" value="modules/resource/tpl/delete/1" />
+	<input type="hidden" name="success_return_url" value="{getUrl('act', 'dispArchiveAdminList', 'module_srl', '')}" />
+	<input type="hidden" name="xe_validator_id" value="modules/archive/tpl/delete/1" />
 	<h1>{$lang->confirm_delete}</h1>
 	<dl class="x_dl-horizontal">
 		<dt>{$lang->module_name}</dt>

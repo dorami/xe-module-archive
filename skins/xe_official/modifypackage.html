@@ -6,16 +6,16 @@
 	<p class="information">{$lang->about_modify_package}</p>
 	<p class="reference">(<em><img src="./img/bu_must.gif" alt="{$required_field}" /></em>) {$lang->about_required_field}</p>
 
-	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/resource/skins/xe_official/modifypackage/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/skins/xe_official/modifypackage/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
 		<p>{$XE_VALIDATOR_MESSAGE}</p>
 	</div>
 
 	<form action="./" method="post" ruleset="modifyPackage">
-	<input type="hidden" name="act" value="procResourceModifyPackage" />
+	<input type="hidden" name="act" value="procArchiveModifyPackage" />
 	<input type="hidden" name="vid" value="{$vid}" />
 	<input type="hidden" name="mid" value="{$mid}" />
 	<input type="hidden" name="package_srl" value="{$selected_package->package_srl}" />
-	<input type="hidden" name="xe_validator_id" value="modules/resource/skins/xe_official/modifypackage/1" />
+	<input type="hidden" name="xe_validator_id" value="modules/archive/skins/xe_official/modifypackage/1" />
 	<fieldset>
 		<legend>{$lang->cmd_modify_package}</legend>
 
@@ -70,7 +70,7 @@
 					<p class="description">{$lang->about_package_license}</p>
 				</td>
 			</tr>
-			<!--@if($module_info->resource_use_path=='Y')-->
+			<!--@if($module_info->archive_use_path=='Y')-->
 			<tr>
 				<th scope="row"><em>{$lang->package_path}<img src="./img/bu_must.gif" alt="{$required_field}"/></em></th>
 				<td>
@@ -97,7 +97,7 @@
 		</fieldset>
 
 		<div class="btnArea">
-			<a href="{getUrl('act','dispResourcePackage')}" class="btn" style="float:left">{$lang->cmd_back}</a>
+			<a href="{getUrl('act','dispArchivePackage')}" class="btn" style="float:left">{$lang->cmd_back}</a>
 			<input type="submit" value="{$lang->cmd_save}" class="btn btn-inverse" />
 		</div>
 	</form>

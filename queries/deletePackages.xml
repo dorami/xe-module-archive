@@ -1,6 +1,6 @@
 <query id="deletePackages" action="delete">
 	<tables>
-		<table name="resource_packages" />
+		<table name="archive_packages" />
 	</tables>
 	<conditions>
 		<condition operation="equal" column="module_srl" var="module_srl" filter="number" notnull="notnull" />

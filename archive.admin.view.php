@@ -1,11 +1,11 @@
 <?php
 	/**
-	 * @class  resourceAdminView
+	 * @class  archiveAdminView
 	 * @author NAVER (developers@xpressengine.com)
-	 * @brief  resource admin view class
+	 * @brief  archive admin view class
 	 **/
 
-	class resourceAdminView extends resource {
+	class archiveAdminView extends archive {
 
 		function init() {
 			$oModuleModel = &getModel('module');
@@ -13,14 +13,14 @@
 			Context::set('module_category', $module_category);
 
 			$this->setTemplatePath(sprintf("%stpl/",$this->module_path));
-			$this->setTemplateFile(strtolower(str_replace('dispResourceAdmin','',$this->act)));
+			$this->setTemplateFile(strtolower(str_replace('dispArchiveAdmin','',$this->act)));
 
 			$module_srl = Context::get('module_srl');
 			if($module_srl) {
 				$module_info = $oModuleModel->getModuleInfoByModuleSrl($module_srl);
 				if(!$module_info) {
 					Context::set('module_srl','');
-					$this->act = 'dispResourceAdminList';
+					$this->act = 'dispArchiveAdminList';
 				} else {
 					ModuleModel::syncModuleToSite($module_info);
 					$this->module_info = $module_info;
@@ -33,28 +33,28 @@
 			$security->encodeHTML('module_info.');
 		}
 
-		function dispResourceAdminList() {
+		function dispArchiveAdminList() {
 			$args->sort_index = "module_srl";
 			$args->page = Context::get('page');
 			$args->list_count = 20;
 			$args->page_count = 10;
 			$args->s_module_category_srl = Context::get('module_category_srl');
-			$output = executeQueryArray('resource.getResourceList', $args);
+			$output = executeQueryArray('archive.getArchiveList', $args);
 			ModuleModel::syncModuleToSite($output->data);
 
-			Context::addJsFile($this->module_path.'tpl/js/resource_admin.js');
+			Context::addJsFile($this->module_path.'tpl/js/archive_admin.js');
 
 			Context::set('total_count', $output->total_count);
 			Context::set('total_page', $output->total_page);
 			Context::set('page', $output->page);
-			Context::set('resource_list', $output->data);
+			Context::set('archive_list', $output->data);
 			Context::set('page_navigation', $output->page_navigation);
 
 			$security = new Security();
-			$security->encodeHTML('resource_list..');
+			$security->encodeHTML('archive_list..');
 		}
 
-		function dispResourceAdminInsert() {
+		function dispArchiveAdminInsert() {
 			$oModuleModel = &getModel('module');
 			$oLayoutModel = &getModel('layout');
 
@@ -68,17 +68,17 @@
 			Context::set('mskin_list', $mskin_list);
 		}
 
-		function dispResourceAdminCategory() {
+		function dispArchiveAdminCategory() {
 			$oDocumentModel = &getModel('document');
 			Context::set('category_content', $oDocumentModel->getCategoryHTML($this->module_info->module_srl));
 		}
 
-		function dispResourceAdminGrant() {
+		function dispArchiveAdminGrant() {
 			$oModuleAdminModel = &getAdminModel('module');
 			Context::set('grant_content', $oModuleAdminModel->getModuleGrantHTML($this->module_info->module_srl, $this->xml_info->grant));
 		}
 
-		function dispResourceAdminAdditions() {
+		function dispArchiveAdminAdditions() {
 			$content = '';
 
 			$output = ModuleHandler::triggerCall('module.dispAdditionSetup', 'before', $content);
@@ -86,7 +86,7 @@
 			Context::set('addition_content', $content);
 		}
 
-		function dispResourceAdminSkin() {
+		function dispArchiveAdminSkin() {
 			$oModuleAdminModel = &getAdminModel('module');
 			Context::set('skin_content', $oModuleAdminModel->getModuleSkinHTML($this->module_info->module_srl));
 
@@ -94,7 +94,7 @@
 			$security->encodeHTML('module_info.');
 		}
 
-		function dispResourceAdminMobileSkin() {
+		function dispArchiveAdminMobileSkin() {
 			$oModuleAdminModel = &getAdminModel('module');
 			Context::set('skin_content', $oModuleAdminModel->getModuleMobileSkinHTML($this->module_info->module_srl));
 
@@ -103,7 +103,7 @@
 		}
 
 
-		function dispResourceAdminDelete() {
+		function dispArchiveAdminDelete() {
 			$oDocumentModel = &getModel('document');
 
 			if(!$this->module_info) return new Object(-1,'msg_invalid_request');

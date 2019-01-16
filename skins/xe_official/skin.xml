@@ -3,7 +3,7 @@
 	<title xml:lang="ko">기본 스킨</title>
 	<title xml:lang="zh-TW">資源面板</title>
 	<title xml:lang="vi">Skin mặc định</title>
-	<description xml:lang="ko">Resource 모듈의 기본 스킨입니다.</description>
+	<description xml:lang="ko">Archive 모듈의 기본 스킨입니다.</description>
 	<description xml:lang="zh-TW">資源模組的預設面板。</description>
 	<description xml:lang="vi">Skin mặc định cho Module Dữ liệu.</description>
 	<version>0.1</version>

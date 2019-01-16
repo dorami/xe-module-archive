@@ -54,7 +54,7 @@
 		<td class="date">{zdate($val->regdate, "Y-m-d H:i")}</td>
 	</tr>
 	<tr>
-		<!--@if($module_info->resource_use_path=='Y')-->
+		<!--@if($module_info->archive_use_path=='Y')-->
 		<th scope="row">{$lang->package_path}</th>
 		<td colspan="3">{$val->path}</td>
 		<td colspan="2" class="left"><!--@if($val->homepage)--><a href="{$val->homepage}">{$val->homepage}</a><!--@else-->&nbsp;<!--@end--></td>

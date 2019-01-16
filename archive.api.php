@@ -1,7 +1,7 @@
 <?php
-class resourceAPI extends resource
+class archiveAPI extends archive
 {
-	function getResourceItems()
+	function getArchiveItems()
 	{
 		$package_srl = Context::get('package_srl');
 		$module_srl = Context::get('module_srl');
@@ -20,16 +20,16 @@ class resourceAPI extends resource
 
 		if(!$module_srl) return;
 
-		$oModel = &getModel('resource');
+		$oModel = &getModel('archive');
 		$args->module_srl = $module_srl;
 		$args->package_srl = $package_srl;
 		if($list_count) $args->list_count = $list_count;
 
-		$output = executeQueryArray('resource.getItemsWithDocument', $args);
+		$output = executeQueryArray('archive.getItemsWithDocument', $args);
 		$this->add('items', $output->data);
 	}
 
-	function dispResourceIndex(&$oModule)
+	function dispArchiveIndex(&$oModule)
 	{
 		$package_categories = Context::get('package_categories');
 		$oModule->add('package_categories',$package_categories);

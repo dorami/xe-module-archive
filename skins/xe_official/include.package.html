@@ -5,7 +5,7 @@
 	<p class="description">{nl2br(htmlspecialchars($package->get('package_description')))}</p>
 
 	{@$rowspan=3}
-	<!--@if($package->get('path') && $module_info->resource_use_path=='Y')-->{@$rowspan++}<!--@end-->
+	<!--@if($package->get('path') && $module_info->archive_use_path=='Y')-->{@$rowspan++}<!--@end-->
 	<!--@if($package->get('homepage'))-->{@$rowspan++}<!--@end-->
 
 	<table class="packageView">
@@ -42,7 +42,7 @@
 		<td colspan="2"><a href="{$package->get('homepage')}" onclick="window.open(this.href); return false;">{$package->get('homepage')}</a></td>
 	</tr>
 	<!--@end-->
-	<!--@if($package->get('path') && $module_info->resource_use_path=='Y')-->
+	<!--@if($package->get('path') && $module_info->archive_use_path=='Y')-->
 	<tr>
 		<th>{$lang->package_path}</th>
 		<td colspan="2">{$package->get('path')}</td>
@@ -139,18 +139,18 @@
 
 
 	<!--@if(!$voted && $is_logged)-->
-	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/resource/skins/xe_official/include.package/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/skins/xe_official/include.package/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
 		<p>{$XE_VALIDATOR_MESSAGE}</p>
 	</div>
 
 	<form action="./" method="post" id="commentForm" class="commentForm" ruleset="insertComment">
 	<input type="hidden" name="vid" value="{$vid}" />
 	<input type="hidden" name="mid" value="{$mid}" />
-	<input type="hidden" name="act" value="procResourceInsertComment" />
+	<input type="hidden" name="act" value="procArchiveInsertComment" />
 	<input type="hidden" name="package_srl" value="{$package->get('package_srl')}" />
 	<input type="hidden" name="item_srl" value="{$package->get('item_srl')}" />
 	<input type="hidden" name="star_point" value="" />
-	<input type="hidden" name="xe_validator_id" value="modules/resource/skins/xe_official/include.package/1" />
+	<input type="hidden" name="xe_validator_id" value="modules/archive/skins/xe_official/include.package/1" />
 	<input type="hidden" name="error_return_url" value="{getRequestUriByServerEnviroment()}#commentForm" />
 	<input type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
 
@@ -171,7 +171,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>{$lang->resource_estimate}</th>
+		<th>{$lang->archive_estimate}</th>
 		<td><textarea name="content" class="commentArea"></textarea></td>
 	</tr>
 	</table>

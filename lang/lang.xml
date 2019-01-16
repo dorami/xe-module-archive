@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <lang>
-	<item name="resource_manager">
+	<item name="archive_manager">
 		<value xml:lang="ko"><![CDATA[자료실 관리]]></value>
-		<value xml:lang="en"><![CDATA[Resources Management]]></value>
+		<value xml:lang="en"><![CDATA[Archives Management]]></value>
 		<value xml:lang="zh-TW"><![CDATA[資源]]></value>
 		<value xml:lang="tr"><![CDATA[Kaynak Yönetimi]]></value>
 		<value xml:lang="vi"><![CDATA[Quản lý tài nguyên]]></value>
 	</item>
-	<item name="about_resource_manager">
+	<item name="about_archive_manager">
 		<value xml:lang="ko"><![CDATA[자료를 관리할 수 있는 모듈입니다]]></value>
 		<value xml:lang="en"><![CDATA[This module is capable of managing downloadable data]]></value>
 		<value xml:lang="zh-TW"><![CDATA[可進行資源管理的模組]]></value>
@@ -75,7 +75,7 @@
 		<value xml:lang="tr"><![CDATA[Oylandı.]]></value>
 		<value xml:lang="vi"><![CDATA[Bình chọn]]></value>
 	</item>
-	<item name="resource_estimate">
+	<item name="archive_estimate">
 		<value xml:lang="ko"><![CDATA[평가]]></value>
 		<value xml:lang="en"><![CDATA[Rate]]></value>
 		<value xml:lang="zh-TW"><![CDATA[評論]]></value>
@@ -112,7 +112,7 @@
 	</item>
 	<item name="about_my_package">
 		<value xml:lang="ko"><![CDATA[등록 신청을 한 자료들의 목록 중 상태가 "등록" 인것이 신청 완료가 된 것입니다.<br/>신청 완료가 된 자료에는 직접 배포를 하실 수 있습니다.]]></value>
-		<value xml:lang="en"><![CDATA["Registered" means that the resource is approved.<br /> You can attach files to approved resource.]]></value>
+		<value xml:lang="en"><![CDATA["Registered" means that the archive is approved.<br /> You can attach files to approved archive.]]></value>
 		<value xml:lang="zh-TW"><![CDATA[下列申請的資料狀態顯示為"通過"的表示登錄成功。<br/>通過的資料再登錄相關檔案即可發布。]]></value>
 		<value xml:lang="tr"><![CDATA["Kayıtlı" kaynağın onaylandığı anlamına gelir.<br /> Onaylanmış kaynaklara dosya ekleyebilirsiniz.]]></value>
 		<value xml:lang="vi"><![CDATA[Danh sách tất cả những dữ liệu do bạn gửi, và được phân phối trực tiếp tại đây.]]></value>
@@ -315,7 +315,7 @@
 	</item>
 	<item name="about_insert_package">
 		<value xml:lang="ko"><![CDATA[자료를 등록하기 이전에 먼저 자료의 신청을 하셔야 합니다.<br/>자료 신청이 접수되면 해당 자료로 파일을 등록하실 수 있습니다.<br/>자료 신청을 별도로 요청 받는 이유는 자료의 업그레이드시에 버전 관리와 연동(다른 모듈 또는 위젯등과의 연계)을 검토하기 위해서입니다.<br/>아래 내용을 입력하신후 등록 버튼을 선택하시면 신청이 됩니다.]]></value>
-		<value xml:lang="en"><![CDATA[Before uploading files, you have to register the resource. <br /> As approved, you can attach files to the resource. <br /> This is because administrator would review the files with versions and dependencies prior to that users download it.<br /> Input followings, and press the register button.]]></value>
+		<value xml:lang="en"><![CDATA[Before uploading files, you have to register the archive. <br /> As approved, you can attach files to the archive. <br /> This is because administrator would review the files with versions and dependencies prior to that users download it.<br /> Input followings, and press the register button.]]></value>
 		<value xml:lang="zh-TW"><![CDATA[在登錄資料前必須要先通過審核。<br/>資料通過審核後，就可以登錄相關檔案。<br/>個別資料申請的原因是檔案版本更新時，檔案管理與關聯檔案 (其他 widget 與模組) 的審核。<br/>以下內容填寫完後送出，即可完成申請。]]></value>
 		<value xml:lang="tr"><![CDATA[Dosyaları yüklemeden önce kaynağı kaydetmek zorundasınız. <br /> Onaylandıktan sonra dosyaları kaynağa ekleyebilirsiniz. <br /> Bunun nedeni, kullanıcılar indirmeden önce yöneticinin dosyaları sürümleri ve bağımlılıkları ile gözden geçirmesidir.<br /> Aşağıdakileri girin ve ardından kaydet düğmesine basın.]]></value>
 		<value xml:lang="vi"><![CDATA[Phải nhập những thông số bắt buộc cho dữ liệu trước khi đăng kí.<br/>Sau khi nhập vào những thông số hợp lệ cho dữ liệu, dữ liệu của bạn sẽ được đăng kí.<br/>Phải nêu rõ dữ liệu này được sử dụng riêng biệt hay sử dụng kết hợp với những dữ liệu khác.<br/>Sau khi hoàn tất, hãy bấm nút <b>[Gửi]</b> phía dưới.]]></value>
@@ -329,7 +329,7 @@
 	</item>
 	<item name="about_modify_package">
 		<value xml:lang="ko"><![CDATA[등록된 자료의 정보중 제목, 라이선스, 홈페이지, 간단한 소개만 수정 가능합니다]]></value>
-		<value xml:lang="en"><![CDATA[For the approved resources, you may modify title, license, homepage, and brief introduction.]]></value>
+		<value xml:lang="en"><![CDATA[For the approved archives, you may modify title, license, homepage, and brief introduction.]]></value>
 		<value xml:lang="zh-TW"><![CDATA[可編輯檔案標題、使用條款、首頁與說明。]]></value>
 		<value xml:lang="tr"><![CDATA[Onaylanmış kaynaklarda başlığı, lisansı, anasayfayı ve özet bilgileri değiştirebilirsiniz.]]></value>
 		<value xml:lang="vi"><![CDATA[Bạn có thể sửa những thông số cho dữ liệu như Tên, Giấy phép, Trang chủ, Mô tả, ... một cách đơn giản.]]></value>
@@ -455,75 +455,75 @@
 	</item>
 	<item name="about_package_description">
 		<value xml:lang="ko"><![CDATA[자료에 대한 간단한 소개를 입력해주세요.<br/>자료 목록에서 보여지는 소개입니다.<br/>300자 이내로 입력해주세요.]]></value>
-		<value xml:lang="en"><![CDATA[Introduce your package briefly. <br /> It will be displayed in the resource list. <br /> Please input in 300 characters.]]></value>
+		<value xml:lang="en"><![CDATA[Introduce your package briefly. <br /> It will be displayed in the archive list. <br /> Please input in 300 characters.]]></value>
 		<value xml:lang="zh-TW"><![CDATA[請輸入簡介。<br/>瀏覽檔案時會顯示。<br/> 請輸入 300 個字以內。]]></value>
 		<value xml:lang="tr"><![CDATA[Paketinizi kısaca tanıtın. <br /> Özet bilgiler kaynak listesinde görüntülenecektir. <br /> 300 karakter genişliğinde bir tanıtım yapabilirsiniz.]]></value>
 		<value xml:lang="vi"><![CDATA[Hãy giới thiệu tóm tắt về dữ liệu muốn gửi.<br/>Giới thiệu này sẽ hiển thị kèm với thông tin của dữ liệu.<br/>Cho phép tối đa 300 kí tự.]]></value>
 	</item>
-	<item name="resource_notify_mail">
+	<item name="archive_notify_mail">
 		<value xml:lang="ko"><![CDATA[메일 통보]]></value>
 		<value xml:lang="en"><![CDATA[Mail Notification]]></value>
 		<value xml:lang="zh-TW"><![CDATA[郵件通知]]></value>
 		<value xml:lang="tr"><![CDATA[Posta Bildirimi]]></value>
 		<value xml:lang="vi"><![CDATA[Email thông báo]]></value>
 	</item>
-	<item name="about_resource_notify_mail">
+	<item name="about_archive_notify_mail">
 		<value xml:lang="ko"><![CDATA[등록된 메일 주소로 자료의 등록/수정등에 대한 알림을 발송합니다]]></value>
 		<value xml:lang="en"><![CDATA[Notification of register/modification of packages will be mailed to the registered address]]></value>
 		<value xml:lang="zh-TW"><![CDATA[當有檔案登錄或修改時，將會用郵件通知。]]></value>
 		<value xml:lang="tr"><![CDATA[Paketlerin kaydedilme/değiştirilme bildirimleri kayıtlı adresinize mail yoluyla gönderilecektir.]]></value>
 		<value xml:lang="vi"><![CDATA[Sẽ gửi một thông báo tới Email này khi có dữ liệu được đăng kí hay sử đổi.]]></value>
 	</item>
-	<item name="resource_use_path">
+	<item name="archive_use_path">
 		<value xml:lang="ko"><![CDATA[경로 정보 사용]]></value>
 		<value xml:lang="en"><![CDATA[Using the path information]]></value>
 		<value xml:lang="zh-TW"><![CDATA[使用路徑]]></value>
 		<value xml:lang="tr"><![CDATA[Yol bilgisini kullanarak]]></value>
 		<value xml:lang="vi"><![CDATA[Đường dẫn sử dụng dữ liệu]]></value>
 	</item>
-	<item name="about_resource_use_path">
+	<item name="about_archive_use_path">
 		<value xml:lang="ko"><![CDATA[사용해제 하시면 경로 정보를 받지 않도록 할 수 있습니다]]></value>
 		<value xml:lang="en"><![CDATA[If not selected, path information will not be used]]></value>
 		<value xml:lang="zh-TW"><![CDATA[取消時將無法使用路徑。]]></value>
 		<value xml:lang="tr"><![CDATA[Eğer seçili değilse, yol bilgisi kullanılamayacaktır.]]></value>
 		<value xml:lang="vi"><![CDATA[Nếu không sử dụng, bạn sẽ không nhận được thông tin đường dẫn sử dụng cho dữ liệu này.]]></value>
 	</item>
-	<item name="resource_new_notify_title">
+	<item name="archive_new_notify_title">
 		<value xml:lang="ko"><![CDATA[자료 등록 요청이 있습니다]]></value>
 		<value xml:lang="en"><![CDATA[Data registration request is]]></value>
 		<value xml:lang="zh-TW"><![CDATA[資料登錄請求]]></value>
 		<value xml:lang="tr"><![CDATA[Veri kaydı gereklidir.]]></value>
 		<value xml:lang="vi"><![CDATA[Dữ liệu mới đã được gửi.]]></value>
 	</item>
-	<item name="resource_modify_notify_title">
+	<item name="archive_modify_notify_title">
 		<value xml:lang="ko"><![CDATA[자료 정보 변경이 있습니다]]></value>
 		<value xml:lang="en"><![CDATA[This information may change data]]></value>
 		<value xml:lang="zh-TW"><![CDATA[檔案資料變更]]></value>
 		<value xml:lang="tr"><![CDATA[Bu bilgi verileri değiştirebilir.]]></value>
 		<value xml:lang="vi"><![CDATA[Thông tin dữ liệu đã được thay đổi.]]></value>
 	</item>
-	<item name="resource_delete_notify_title">
+	<item name="archive_delete_notify_title">
 		<value xml:lang="ko"><![CDATA[자료가 삭제되었습니다]]></value>
 		<value xml:lang="en"><![CDATA[Package have been removed]]></value>
 		<value xml:lang="zh-TW"><![CDATA[刪除檔案]]></value>
 		<value xml:lang="tr"><![CDATA[Paket kaldırıldı.]]></value>
 		<value xml:lang="vi"><![CDATA[Dữ liệu đã được xóa.]]></value>
 	</item>
-	<item name="resource_attach_notify_title">
+	<item name="archive_attach_notify_title">
 		<value xml:lang="ko"><![CDATA[자료에 파일 첨부되었습니다]]></value>
 		<value xml:lang="en"><![CDATA[This package has been attached to the file]]></value>
 		<value xml:lang="zh-TW"><![CDATA[資料有附加檔案]]></value>
 		<value xml:lang="tr"><![CDATA[Bu paket dosyaya eklendi.]]></value>
 		<value xml:lang="vi"><![CDATA[Dữ liệu đã được đính kèm.]]></value>
 	</item>
-	<item name="resource_status_changed">
+	<item name="archive_status_changed">
 		<value xml:lang="ko"><![CDATA[등록하신 자료의 상태가 변경되었습니다]]></value>
 		<value xml:lang="en"><![CDATA[Has changed the status of registered data]]></value>
 		<value xml:lang="zh-TW"><![CDATA[登錄的資料狀態變更]]></value>
 		<value xml:lang="tr"><![CDATA[Kayıtlı verilerin statüleri değişti.]]></value>
 		<value xml:lang="vi"><![CDATA[Trạng thái dữ kiệu đã được thay đổi.]]></value>
 	</item>
-	<item name="resource_status_changed_message">
+	<item name="archive_status_changed_message">
 		<value xml:lang="ko"><![CDATA[[title] 자료의 상태가 [status]로 변경되었습니다]]></value>
 		<value xml:lang="en"><![CDATA[The status of [Title] is changed into [status]]]></value>
 		<value xml:lang="zh-TW"><![CDATA[[title] 的資料狀態變更成 [status]]]></value>

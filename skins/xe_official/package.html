@@ -7,9 +7,9 @@
 
 	{@
 		$avail = array(
-			'modules/resource/skins/xe_official/attach/1' => 1,
-			'modules/resource/skins/xe_official/insertpackage/1' => 1,
-			'modules/resource/skins/xe_official/modifyattach/1' => 1
+			'modules/archive/skins/xe_official/attach/1' => 1,
+			'modules/archive/skins/xe_official/insertpackage/1' => 1,
+			'modules/archive/skins/xe_official/modifyattach/1' => 1
 		);
 	}
 	<div cond="$XE_VALIDATOR_MESSAGE && isset($avail[$XE_VALIDATOR_ID])" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
@@ -51,7 +51,7 @@
 		<th scope="row">{$lang->package_license}</th>
 		<td>{$selected_package->license}</td>
 	</tr>
-	<!--@if($module_info->resource_use_path=='Y')-->
+	<!--@if($module_info->archive_use_path=='Y')-->
 	<tr>
 		<th scope="row">{$lang->package_path}</th>
 		<td colspan="3">{$selected_package->path}</td>
@@ -67,11 +67,11 @@
 	</tr>
 	</table>
 	<div class="btnArea">
-		<a href="{getUrl('act','dispResourcePackageList')}" class="btn" style="float:left">{$lang->cmd_back}</a>
+		<a href="{getUrl('act','dispArchivePackageList')}" class="btn" style="float:left">{$lang->cmd_back}</a>
 		<span class="btn-group">
-			<a cond="$selected_package->status == 'accepted'" href="{getUrl('act','dispResourceAttach')}" class="btn btn-inverse">{$lang->cmd_attach_file}</a>
-			<a href="{getUrl('act','dispResourceModifyPackage')}" class="btn">{$lang->cmd_modify}</a>
-			<a href="{getUrl('act','dispResourceDeletePackage')}" class="btn">{$lang->cmd_delete}</a>
+			<a cond="$selected_package->status == 'accepted'" href="{getUrl('act','dispArchiveAttach')}" class="btn btn-inverse">{$lang->cmd_attach_file}</a>
+			<a href="{getUrl('act','dispArchiveModifyPackage')}" class="btn">{$lang->cmd_modify}</a>
+			<a href="{getUrl('act','dispArchiveDeletePackage')}" class="btn">{$lang->cmd_delete}</a>
 		</span>
 	</div>
 	<!--@end-->
@@ -102,7 +102,7 @@
 		<td class="date">{zdate($val->regdate, "Y-m-d H:i")}</td>
 		<td class="right" colspan="2">
 			<span class="btn-group">
-				<a href="{getUrl('act','dispResourceModifyAttach','item_srl',$val->item_srl)}" class="btn">{$lang->cmd_modify}</a>
+				<a href="{getUrl('act','dispArchiveModifyAttach','item_srl',$val->item_srl)}" class="btn">{$lang->cmd_modify}</a>
 				<button type="button" onclick="if(confirm('{$lang->confirm_delete}')) doDeleteAttach({$val->package_srl},{$val->item_srl})" class="btn">{$lang->cmd_delete}</button>
 			</span>
 		</td>

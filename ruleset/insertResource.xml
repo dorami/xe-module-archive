@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ruleset version="1.5.0">
 	<fields>
-		<field name="resource_name" required="true" length="1:40" rule="alpha_number">
+		<field name="archive_name" required="true" length="1:40" rule="alpha_number">
 			<title xml:lang="ko"><![CDATA[모듈 이름]]></title>
 			<title xml:lang="en"><![CDATA[Module Name]]></title>
 			<title xml:lang="jp"><![CDATA[モジュール名]]></title>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <skin version="0.2">
 	<title xml:lang="ko">자료실 모바일 심플 회색 스킨</title>
-	<title xml:lang="vi">Giao diện Resource cho Mobile</title>
+	<title xml:lang="vi">Giao diện Archive cho Mobile</title>
 	<description xml:lang="ko">자료실 모듈의 모바일 심플 회색 스킨입니다.</description>
-	<description xml:lang="vi">Giao diện mặc định Resource cho mobile.</description>
+	<description xml:lang="vi">Giao diện mặc định Archive cho mobile.</description>
 	<version>0.1</version>
 	<date>2010-07-21</date>
-	<author email_address="developers@xpressengine.com" link="http://resource.xpressengine.net">
+	<author email_address="developers@xpressengine.com" link="http://archive.xpressengine.net">
 		<name xml:lang="ko">NAVER</name>
 		<name xml:lang="vi">NAVER</name>
 	</author>

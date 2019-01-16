@@ -1,11 +1,11 @@
 <?php
 	/**
-	 * @class  resourceModel
+	 * @class  archiveModel
 	 * @author NAVER (developers@xpressengine.com)
-	 * @brief  resource model class
+	 * @brief  archive model class
 	 **/
 
-	class resourceModel extends resource {
+	class archiveModel extends archive {
 
 		function init() {
 		}
@@ -23,7 +23,7 @@
 
 			$args->page = $page;
 
-			$output = executeQueryArray('resource.getPackageList', $args);
+			$output = executeQueryArray('archive.getPackageList', $args);
 
 			return $output;
 		}
@@ -32,7 +32,7 @@
 			$args->module_srl = $module_srl;
 			$args->package_srl = $package_srl;
 			if(!is_null($member_srl)) $args->member_srl = $member_srl;
-			$output = executeQuery('resource.getPackage', $args);
+			$output = executeQuery('archive.getPackage', $args);
 			return $output->data;
 		}
 
@@ -42,7 +42,7 @@
 			$args->package_srl = $package_srl;
 			$args->item_srl = $item_srl;
 
-			$output = executeQuery('resource.getItem', $args);
+			$output = executeQuery('archive.getItem', $args);
 			if(!$output->toBool() || !$output->data) return null;
 			$item = $output->data;
 			$item->download_url = getFullUrl().$oFileModel->getDownloadUrl($item->file_srl, $item->sid);
@@ -55,7 +55,7 @@
 			$args->module_srl = $module_srl;
 			$args->package_srl = $package_srl;
 
-			$output = executeQueryArray('resource.getItems', $args);
+			$output = executeQueryArray('archive.getItems', $args);
 			if(!$output->data) return array();
 			foreach($output->data as $key => $val) {
 				if($val->voter>0) $val->star = (int)($val->voted/$val->voter);
@@ -97,7 +97,7 @@
 				$args->sort_index = 'item.list_order';
 			}
 
-			$output = executeQueryArray('resource.getLatestItemList', $args);
+			$output = executeQueryArray('archive.getLatestItemList', $args);
 			if($output->data) {
 				foreach($output->data as $key => $val) {
 					if($val->package_voter>0) $output->data[$key]->package_star = (int)($val->package_voted/$val->package_voter);
@@ -111,7 +111,7 @@
 
 		function getLatestItem($package_srl) {
 			$args->package_srl = $package_srl;
-			$output = executeQuery('resource.getLatestItem', $args);
+			$output = executeQuery('archive.getLatestItem', $args);
 			return $output->data;
 
 		}
@@ -119,7 +119,7 @@
 		function getDependency($module_srl, $item_srl) {
 			$args->module_srl = $module_srl;
 			$args->item_srl = $item_srl;
-			$output = executeQueryArray('resource.getDependency', $args);
+			$output = executeQueryArray('archive.getDependency', $args);
 			return $output->data;
 		}
 
@@ -128,14 +128,14 @@
 			$args->package_srl = $package_srl;
 			$args->item_srl = $item_srl;
 			$args->member_srl = $member_srl;
-			$output = executeQuery('resource.hasVoted', $args);
+			$output = executeQuery('archive.hasVoted', $args);
 			return $output->data->count>0?true:false;
 
 		}
 
 		function getCategoryPacakgeCount($module_srl) {
 			$count_args->module_srl = $module_srl;
-			$output = executeQueryArray('resource.getCategoryPackageCount', $count_args);
+			$output = executeQueryArray('archive.getCategoryPackageCount', $count_args);
 			if(!$output->data) return array();
 			foreach($output->data as $key => $val) {
 				$result[0]->count +=$val->count;
@@ -148,7 +148,7 @@
 		 **/
 		function triggerModuleListInSitemap(&$obj)
 		{
-			array_push($obj, 'resource');
+			array_push($obj, 'archive');
 		}
 	}
 ?>

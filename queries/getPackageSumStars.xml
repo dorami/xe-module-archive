@@ -1,7 +1,7 @@
 <query id="getPackageSumStars" action="select">
 	<tables>
-		<table name="resource_packages" alias="package" />
-		<table name="resource_items" alias="items" />
+		<table name="archive_packages" alias="package" />
+		<table name="archive_items" alias="items" />
 		<table name="comments" alias="comments" />
 	</tables>
 	<columns>

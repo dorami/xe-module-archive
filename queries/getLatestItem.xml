@@ -1,8 +1,8 @@
 <query id="getLatestItem" action="select">
 	<tables>
-		<table name="resource_packages" alias="package" />
+		<table name="archive_packages" alias="package" />
 		<table name="member" alias="member" />
-		<table name="resource_items" alias="item" />
+		<table name="archive_items" alias="item" />
 	</tables>
 	<columns>
 		<column name="package.module_srl" alias="module_srl"/>

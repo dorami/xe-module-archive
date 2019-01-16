@@ -1,6 +1,6 @@
 <query id="isAcceptedOnce" action="select">
 	<tables>
-		<table name="resource_packages" alias="package" />
+		<table name="archive_packages" alias="package" />
 	</tables>
 	<columns>
 		<column name="count(*)" alias="count" />

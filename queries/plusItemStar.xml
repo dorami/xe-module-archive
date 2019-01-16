@@ -1,6 +1,6 @@
 <query id="plusItemStar" action="update">
 	<tables>
-		<table name="resource_items" />
+		<table name="archive_items" />
 	</tables>
 	<columns>
 		<column name="voted" var="voted" notnull="notnull" />

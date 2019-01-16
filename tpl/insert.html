@@ -1,17 +1,17 @@
 <include target="_header.html" />
-<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/resource/tpl/insert/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/tpl/insert/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
 	<p>{$XE_VALIDATOR_MESSAGE}</p>
 </div>
-<form action="./" method="post" class="x_form-horizontal" ruleset="insertResource">
-	<input type="hidden" name="module" value="resource" />
-	<input type="hidden" name="act" value="procResourceAdminInsert" />
+<form action="./" method="post" class="x_form-horizontal" ruleset="insertArchive">
+	<input type="hidden" name="module" value="archive" />
+	<input type="hidden" name="act" value="procArchiveAdminInsert" />
 	<input type="hidden" name="module_srl" value="{$module_info->module_srl}" />
-	<input type="hidden" name="xe_validator_id" value="modules/resource/tpl/insert/1" />
+	<input type="hidden" name="xe_validator_id" value="modules/archive/tpl/insert/1" />
 	<input cond="$mid || $module_srl" type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
 	<div class="x_control-group" cond="$logged_info->is_admin=='Y'">
 		<label class="x_control-label" for="mid">{$lang->mid}</label>
 		<div class="x_controls">
-			<input type="text" name="resource_name" id="mid" value="{$module_info->mid}" />
+			<input type="text" name="archive_name" id="mid" value="{$module_info->mid}" />
 			<a href="#about_mid" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
 			<p class="x_help-block" id="about_mid" hidden>{$lang->about_mid}</p>
 		</div>
@@ -87,11 +87,11 @@
 		</div>
 	</div>
 	<div class="x_control-group">
-		<label class="x_control-label" for="resource_use_path">{$lang->resource_use_path}</label>
+		<label class="x_control-label" for="archive_use_path">{$lang->archive_use_path}</label>
 		<div class="x_controls">
-			<label for="resource_use_path" class="x_inline">
-				<input type="checkbox" name="resource_use_path" id="resource_use_path" value="Y" checked="checked"|cond="$module_info->resource_use_path=='Y'" />
-				{$lang->about_resource_use_path}
+			<label for="archive_use_path" class="x_inline">
+				<input type="checkbox" name="archive_use_path" id="archive_use_path" value="Y" checked="checked"|cond="$module_info->archive_use_path=='Y'" />
+				{$lang->about_archive_use_path}
 			</label>
 		</div>
 	</div>
@@ -104,11 +104,11 @@
 		</div>
 	</div>
 	<div class="x_control-group">
-		<label class="x_control-label" for="resource_notify_mail">{$lang->resource_notify_mail}</label>
+		<label class="x_control-label" for="archive_notify_mail">{$lang->archive_notify_mail}</label>
 		<div class="x_controls">
-			<input type="email" name="resource_notify_mail" id="resource_notify_mail" value="{htmlspecialchars($module_info->resource_notify_mail)}" />
-			<a href="#about_resource_notify_mail" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
-			<p class="x_help-block" id="about_resource_notify_mail" hidden>{$lang->about_resource_notify_mail}</p>
+			<input type="email" name="archive_notify_mail" id="archive_notify_mail" value="{htmlspecialchars($module_info->archive_notify_mail)}" />
+			<a href="#about_archive_notify_mail" class="x_icon-question-sign" data-toggle>{$lang->help}</a>
+			<p class="x_help-block" id="about_archive_notify_mail" hidden>{$lang->about_archive_notify_mail}</p>
 		</div>
 	</div>
 	<div class="x_control-group">
@@ -136,7 +136,7 @@
 		</div>
 	</div>
 	<div class="btnArea">
-		<a cond="$module == 'admin'" class="x_btn x_pull-left" href="{getUrl('act', 'dispResourceAdminList', 'module_srl', '')}">{$lang->cmd_back}</a>
+		<a cond="$module == 'admin'" class="x_btn x_pull-left" href="{getUrl('act', 'dispArchiveAdminList', 'module_srl', '')}">{$lang->cmd_back}</a>
 		<a cond="!$module" class="x_btn x_pull-left" href="{getUrl('act', '')}">{$lang->cmd_back}</a>
 		<input class="x_btn  x_btn-primary" type="submit" value="{$lang->cmd_registration}" />
 	</div>

@@ -1,4 +1,4 @@
-<table name="resource_dependency">
+<table name="archive_dependency">
 	<column name="module_srl" type="number" size="11" default="0" notnull="notnull" index="idx_module_srl" />
 	<column name="item_srl" type="number" size="11" notnull="notnull" default="0" index="idx_package_srl" />
 	<column name="dependency_item_srl" type="number" size="11" notnull="notnull" default="0" index="idx_dependendy_item_srl" />

@@ -39,14 +39,14 @@
 	</tr>
 	</table>
 
-	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/resource/skins/xe_official/modifyattach/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/skins/xe_official/modifyattach/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
 		<p>{$XE_VALIDATOR_MESSAGE}</p>
 	</div>
 
 	<form action="./" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="vid" value="{$vid}" />
 	<input type="hidden" name="mid" value="{$mid}" />
-	<input type="hidden" name="act" value="procResourceModifyAttachOneTime" />
+	<input type="hidden" name="act" value="procArchiveModifyAttachOneTime" />
 	<input type="hidden" name="package_srl" value="{$selected_package->package_srl}" />
 	<input type="hidden" name="item_srl" value="{$item->item_srl}" />
 	<input type="hidden" name="document_srl" value="{$item->document_srl}" />
@@ -55,7 +55,7 @@
 			copy a value of 'attach_description' to 'description' when submit by 'BeforeValidateStub' -->
 	<input type="hidden" name="description" value="{$item_document->getContentText()}" />
 	<input type="hidden" name="attach_description" value="{$item_document->getContentText()}" />
-	<input type="hidden" name="xe_validator_id" value="modules/resource/skins/xe_official/modifyattach/1" />
+	<input type="hidden" name="xe_validator_id" value="modules/archive/skins/xe_official/modifyattach/1" />
 	<fieldset>
 			<table class="form">
 			<tr class="first_child">
@@ -121,7 +121,7 @@
 		</fieldset>
 
 		<div class="btnArea">
-			<a href="{getUrl('act','dispResourcePackage','item_srl','')}" class="btn" style="float:left">{$lang->cmd_back}</a>
+			<a href="{getUrl('act','dispArchivePackage','item_srl','')}" class="btn" style="float:left">{$lang->cmd_back}</a>
 			<input type="submit" value="{$lang->cmd_attach_file}" class="btn btn-inverse" />
 		</div>
 	</form>

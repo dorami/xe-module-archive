@@ -5,16 +5,16 @@
 	<p class="information">{$lang->about_insert_package}</p>
 	<p class="reference">(<em><img src="./img/bu_must.gif" alt="{$required_field}" /></em>) {$lang->about_required_field}</p>
 
-	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/resource/skins/xe_official/insertpackage/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/skins/xe_official/insertpackage/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
 		<p>{$XE_VALIDATOR_MESSAGE}</p>
 	</div>
 
 	<form action="./" method="post" ruleset="insertPackage">
-	<input type="hidden" name="act" value="procResourceInsertPackage" />
+	<input type="hidden" name="act" value="procArchiveInsertPackage" />
 	<input type="hidden" name="vid" value="{$vid}" />
 	<input type="hidden" name="mid" value="{$mid}" />
 	<input type="hidden" name="package_srl" value="{$selected_package->package_srl}" />
-	<input type="hidden" name="xe_validator_id" value="modules/resource/skins/xe_official/insertpackage/1" />
+	<input type="hidden" name="xe_validator_id" value="modules/archive/skins/xe_official/insertpackage/1" />
 	<input type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
 	<fieldset>
 		<legend>{$lang->cmd_insert_package}</legend>
@@ -55,7 +55,7 @@
 					<p class="description">{$lang->about_package_title}</p>
 				</td>
 			</tr>
-			<!--@if($module_info->resource_use_path=='Y')-->
+			<!--@if($module_info->archive_use_path=='Y')-->
 			<tr>
 				<th scope="row"><em>{$lang->package_path}<img src="./img/bu_must.gif" alt="{$required_field}" /></em></th>
 				<td>

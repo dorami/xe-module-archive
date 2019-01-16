@@ -1,6 +1,6 @@
 <query id="insertPackage" action="insert">
 	<tables>
-		<table name="resource_packages" />
+		<table name="archive_packages" />
 	</tables>
 	<columns>
 		<column name="module_srl" var="module_srl" filter="number" notnull="notnull" />

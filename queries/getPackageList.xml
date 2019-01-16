@@ -1,8 +1,8 @@
 <query id="getPackageList" action="select">
 	<tables>
 		<table name="member" alias="member" />
-		<table name="resource_packages" alias="package" />
-		<table name="resource_items" alias="item" type="left join">
+		<table name="archive_packages" alias="package" />
+		<table name="archive_items" alias="item" type="left join">
 			<conditions>
 				<condition operation="equal" column="item.item_srl" default="package.latest_item_srl" notnull="notnull" />
 			</conditions>

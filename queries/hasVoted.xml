@@ -1,6 +1,6 @@
 <query id="getItem" action="select">
 	<tables>
-		<table name="resource_items" alias="items" />
+		<table name="archive_items" alias="items" />
 		<table name="comments" alias="comments" />
 	</tables>
 	<columns>

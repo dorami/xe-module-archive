@@ -1,6 +1,6 @@
 <query id="deleteDependency" action="delete">
 	<tables>
-		<table name="resource_dependency" />
+		<table name="archive_dependency" />
 	</tables>
 	<conditions>
 		<condition operation="equal" column="module_srl" var="module_srl" filter="number" notnull="notnull" />

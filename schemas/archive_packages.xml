@@ -1,4 +1,4 @@
-<table name="resource_packages">
+<table name="archive_packages">
 	<column name="module_srl" type="number" size="11" default="0" notnull="notnull" index="idx_packages" />
 	<column name="status" type="char" size="20" default="waiting" notnull="notnull" index="idx_packages" />
 	<column name="category_srl" type="number" size="11" notnull="notnull" default="0" index="idx_packages" />

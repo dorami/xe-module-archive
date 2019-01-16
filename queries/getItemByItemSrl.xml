@@ -1,6 +1,6 @@
 <query id="getItemByItemSrl" action="select">
 	<tables>
-		<table name="resource_items" />
+		<table name="archive_items" />
 	</tables>
 	<columns>
 		<column name="*" />

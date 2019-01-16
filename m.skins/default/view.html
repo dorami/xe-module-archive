@@ -23,7 +23,7 @@
 			<dt>{$lang->homepage}</dt>
 			<dd><a href="{$package->get('homepage')}" onclick="window.open(this.href); return false;">{$package->get('homepage')}</a></dd>
 			<!--@end-->
-			<!--@if($package->get('path') && $module_info->resource_use_path=='Y')-->
+			<!--@if($package->get('path') && $module_info->archive_use_path=='Y')-->
 			<dt>{$lang->package_path}</dt>
 			<dd>{$package->get('path')}</dd>
 			<!--@end-->
@@ -35,7 +35,7 @@
 			<dd>{$package->get('item_version')}</dd>
 			<dt>{$lang->downloaded_count}</dt>
 			<dd>{$package->get('item_downloaded')}</dd>
-			<dt>{$lang->resource_estimate}</dt>
+			<dt>{$lang->archive_estimate}</dt>
 			<dd>
 				<!--@for($i=0;$i<5;$i++)--><!--@if($i<$package->get('item_star'))-->★<!--@else-->☆<!--@end--><!--@end-->
 				<!--@if($package->get('item_voter'))-->
@@ -50,7 +50,7 @@
 	</div>
 	<div id="skip_co"></div>
 	<div class="hx h3">
-		<h3>{$lang->resource_estimate} <em>[{number_format($package->getCommentCount())}]</em></h3>
+		<h3>{$lang->archive_estimate} <em>[{number_format($package->getCommentCount())}]</em></h3>
 		<button type="button" class="tg" title="open/close"></button>
 	</div>
 	<!--@if($package->getCommentCount())-->
@@ -92,7 +92,7 @@
 				<label for="p10">5</label>
 			</li>
 			<li>
-				<label for="rText">{$lang->resource_estimate}</label>
+				<label for="rText">{$lang->archive_estimate}</label>
 				<textarea name="content" cols="20" rows="5" id="rText"></textarea>
 			</li>
 		</ul>

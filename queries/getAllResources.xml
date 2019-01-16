@@ -1,4 +1,4 @@
-<query id="getAllResources" action="select">
+<query id="getAllArchives" action="select">
 	<tables>
 		<table name="modules" />
 	</tables>
@@ -6,6 +6,6 @@
 		<column name="*" />
 	</columns>
 	<conditions>
-		<condition operation="equal" column="module" default="resource" />
+		<condition operation="equal" column="module" default="archive" />
 	</conditions>
 </query>

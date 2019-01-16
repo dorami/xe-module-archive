@@ -1,7 +1,7 @@
 <include target="./_header.html" />
 {@
 	$avail_validator_id = array(
-		'modules/resource/tpl/delete/1' => 1,
+		'modules/archive/tpl/delete/1' => 1,
 	);
 }
 <div cond="$XE_VALIDATOR_MESSAGE && isset($avail_validator_id[$XE_VALIDATOR_ID])" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
@@ -35,7 +35,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr loop="$resource_list => $no,$val">
+			<tr loop="$archive_list => $no,$val">
 				<td>{$no}</td>
 				<td>
 					<!--@if(!$val->module_category_srl)-->
@@ -52,9 +52,9 @@
 				<td><a href="{getSiteUrl($val->domain,'','mid',$val->mid)}" target="_blank">{$val->browser_title}</a></td>
 				<td>{zdate($val->regdate,"Y-m-d")}</td>
 				<td>
-					<a href="{getUrl('act','dispResourceAdminInsert','module_srl',$val->module_srl)}" class="x_icon-cog">{$lang->cmd_setup}</a>
+					<a href="{getUrl('act','dispArchiveAdminInsert','module_srl',$val->module_srl)}" class="x_icon-cog">{$lang->cmd_setup}</a>
 					<a href="{getUrl('','module','module','act','dispModuleAdminCopyModule','module_srl',$val->module_srl)}" class="x_icon-plus" onclick="popopen(this.href);return false;">{$lang->cmd_copy}</a>
-					<a href="{getUrl('act','dispResourceAdminDelete','module_srl', $val->module_srl)}" class="x_icon-remove">{$lang->cmd_delete}</a>
+					<a href="{getUrl('act','dispArchiveAdminDelete','module_srl', $val->module_srl)}" class="x_icon-remove">{$lang->cmd_delete}</a>
 				</td>
 				<td><input type="checkbox" name="cart" value="{$val->module_srl}" /></td>
 			</tr>
@@ -72,7 +72,7 @@
 		</ul>
 	</div>
 	<span class="x_btn-group x_pull-right">
-		<a class="x_btn x_btn-inverse" href="{getUrl('act','dispResourceAdminInsert','module_srl','')}">{$lang->cmd_make}</a>
+		<a class="x_btn x_btn-inverse" href="{getUrl('act','dispArchiveAdminInsert','module_srl','')}">{$lang->cmd_make}</a>
 		<a class="x_btn" href="{getUrl('','module','module','act','dispModuleAdminModuleSetup')}" onclick="doCartSetup(this.href); return false;">{$lang->cmd_setup}</a>
 		<a class="x_btn" href="{getUrl('','module','module','act','dispModuleAdminModuleAdditionSetup')}" onclick="doCartSetup(this.href); return false;">{$lang->cmd_addition_setup}</a>
 		<a class="x_btn" href="{getUrl('','module','module','act','dispModuleAdminModuleGrantSetup')}" onclick="doCartSetup(this.href); return false;">{$lang->cmd_manage_grant}</a>

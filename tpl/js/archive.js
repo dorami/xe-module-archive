@@ -5,8 +5,8 @@ function completeChangeStatus() {
 function doSearchDependency() {
 	var url = request_uri;
 	if(typeof(xeVid)!='undefined') url.setQuery('vid', xeVid);
-	url = url.setQuery('mid',current_mid).setQuery('act','dispResourceSearchDependency');
-	popopen(url,'resourceSearchDependency');
+	url = url.setQuery('mid',current_mid).setQuery('act','dispArchiveSearchDependency');
+	popopen(url,'archiveSearchDependency');
 }
 
 function doDeleteDependency() {
@@ -22,24 +22,24 @@ function doDeleteDependency() {
 function completeAttach(ret_obj, response_tags, callback_func_args, fo_obj) {
 	fo_obj.document_srl.value = ret_obj.document_srl;
 	fo_obj.item_srl.value = ret_obj.item_srl;
-	fo_obj.act.value = 'procResourceAttachFile';
+	fo_obj.act.value = 'procArchiveAttachFile';
 	fo_obj.submit();
 }
 
 function completeModifyAttach(ret_obj, response_tags, callback_func_args, fo_obj) {
-	fo_obj.act.value = 'procResourceModifyAttachFile';
+	fo_obj.act.value = 'procArchiveModifyAttachFile';
 	fo_obj.submit();
 }
 
 function completeDeletePackage(ret_obj) {
-	location.href = current_url.setQuery('act', 'dispResourcePackageList').setQuery('package_srl', '');
+	location.href = current_url.setQuery('act', 'dispArchivePackageList').setQuery('package_srl', '');
 }
 
 function doDeletePackage(package_srl) {
 	var params = new Array();
 	params['package_srl'] = package_srl;
 	params['mid'] = current_mid;
-	exec_xml('resource','procResourceAdminDeletePackage', params, function() { location.reload(); });
+	exec_xml('archive','procArchiveAdminDeletePackage', params, function() { location.reload(); });
 }
 
 function doDeleteAttach(package_srl, item_srl) {
@@ -47,7 +47,7 @@ function doDeleteAttach(package_srl, item_srl) {
 	params['package_srl'] = package_srl;
 	params['item_srl'] = item_srl;
 	params['mid'] = current_mid;
-	exec_xml('resource','procResourceDeleteAttach', params, function() { location.reload(); });
+	exec_xml('archive','procArchiveDeleteAttach', params, function() { location.reload(); });
 }
 
 function doInsertDependency(item_srl, text) {
@@ -86,7 +86,7 @@ function doDeleteComment(package_srl, item_srl, comment_srl) {
 	params['comment_srl'] = comment_srl;
 	if(typeof(xeVid)!='undefined') params['vid'] = xeVid;
 	params['mid'] = current_mid;
-	exec_xml('resource','procResourceDeleteComment', params, function() { location.reload() });
+	exec_xml('archive','procArchiveDeleteComment', params, function() { location.reload() });
 }
 
 jQuery(window).load( function() {
@@ -115,12 +115,12 @@ function doDeleteItem(package_srl, item_srl) {
 	params['item_srl'] = item_srl;
 	if(typeof(xeVid)!='undefined') params['vid'] = xeVid;
 	params['mid'] = current_mid;
-	exec_xml('resource','procResourceDeleteItem', params, function() { location.reload(); });
+	exec_xml('archive','procArchiveDeleteItem', params, function() { location.reload(); });
 }
 
 jQuery(function($){
 	var act = current_url.getQuery('act');
-	if(act == 'dispResourceAttach' || act == 'dispResourceModifyAttach'){
+	if(act == 'dispArchiveAttach' || act == 'dispArchiveModifyAttach'){
 
 		// create a plugin for performed a task when before validate.
 		var BeforeValidateStub = xe.createPlugin('before_validate_stub', {

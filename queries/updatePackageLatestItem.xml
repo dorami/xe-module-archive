@@ -1,6 +1,6 @@
 <query id="updatePackage" action="update">
 	<tables>
-		<table name="resource_packages" />
+		<table name="archive_packages" />
 	</tables>
 	<columns>
 		<column name="latest_item_srl" var="latest_item_srl" notnull="notnull" />
