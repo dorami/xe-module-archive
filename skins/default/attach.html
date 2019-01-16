@@ -39,29 +39,28 @@
 	</tr>
 	</table>
 
-	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/skins/xe_official/modifyattach/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/skins/default/attach/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
 		<p>{$XE_VALIDATOR_MESSAGE}</p>
 	</div>
 
-	<form action="./" method="post" enctype="multipart/form-data">
+	<form action="./" method="post" enctype="multipart/form-data" ruleset="attachOneTime">
 	<input type="hidden" name="vid" value="{$vid}" />
 	<input type="hidden" name="mid" value="{$mid}" />
-	<input type="hidden" name="act" value="procArchiveModifyAttachOneTime" />
+	<input type="hidden" name="act" value="procArchiveAttachOneTime" />
 	<input type="hidden" name="package_srl" value="{$selected_package->package_srl}" />
-	<input type="hidden" name="item_srl" value="{$item->item_srl}" />
-	<input type="hidden" name="document_srl" value="{$item->document_srl}" />
+	<input type="hidden" name="item_srl" value="{$item_srl}" />
+	<input type="hidden" name="document_srl" value="{$document_srl}" />
 	<input type="hidden" name="dependency" value="" />
 	<!--// for backward compatibility, remain a 'attach_description'.
 			copy a value of 'attach_description' to 'description' when submit by 'BeforeValidateStub' -->
-	<input type="hidden" name="description" value="{$item_document->getContentText()}" />
-	<input type="hidden" name="attach_description" value="{$item_document->getContentText()}" />
-	<input type="hidden" name="xe_validator_id" value="modules/archive/skins/xe_official/modifyattach/1" />
+	<input type="hidden" name="attach_description" value="" />
+	<input type="hidden" name="description" value="" />
+	<input type="hidden" name="xe_validator_id" value="modules/archive/skins/default/attach/1" />
 	<fieldset>
 			<table class="form">
 			<tr class="first_child">
 				<th scope="row"><em>{$lang->attach_file}<img src="./img/bu_must.gif" alt="{$required_field}" /></em></th>
 				<td>
-					<p><a href="{$item->download_url}" class="file">{$item->source_filename}</a></p>
 					<p><input type="file" name="attach_file"/></p>
 					<p class="description">{$lang->about_attach_file}</p>
 				</td>
@@ -69,17 +68,14 @@
 			<tr>
 				<th scope="row"><em>{$lang->attach_screenshot}<img src="./img/bu_must.gif" alt="{$required_field}" /></em></th>
 				<td>
-					<p>
-						<img src="{$item->screenshot_url}" aliang="left" alt="" />
-						<input type="file" name="attach_screenshot"/>
-					</p>
+					<p><input type="file" name="attach_screenshot"/></p>
 					<p class="description">{$lang->about_attach_screenshot}</p>
 				</td>
 			</tr>
 			<tr>
 				<th scope="row"><em>{$lang->attach_version}<img src="./img/bu_must.gif" alt="{$required_field}" /></em></th>
 				<td>
-					<p><input type="text" name="version" class="text_field" value="{htmlspecialchars($item->version)}"/></p>
+					<p><input type="text" name="version" class="text_field"/></p>
 					<p class="description">{$lang->about_attach_version}</p>
 					<!--@if($latest_item)-->
 					<p class="description bold">{$lang->latest_attach_version} : {$latest_item->item_version}</p>
@@ -89,16 +85,10 @@
 			<tr>
 				<th scope="row"><em>{$lang->attach_dependency}</em></th>
 				<td>
+					<p><select name="sel_dependency" size="10" class="select_field" id="sel_dependency"></select></p>
 					<p>
-						<select name="sel_dependency" size="10" class="select_field" id="sel_dependency">
-						<!--@foreach($dependency as $key => $val)-->
-						<option value="{$val->item_srl}">[{$categories[$val->category_srl]->title}] {$val->title} (ver. {$val->version})</option>
-						<!--@end-->
-						</select>
-					</p>
-					<p>
-						<button type="button" onclick="doSearchDependency()" class="btn">{$lang->cmd_search}</button>
-						<button type="button" onclick="doDeleteDependency()" class="btn">{$lang->cmd_delete}</button>
+						<button type="button" onclick="doSearchDependency();" class="btn">{$lang->cmd_search}</button>
+						<button type="button" onclick="doDeleteDependency();" class="btn">{$lang->cmd_delete}</button>
 					</p>
 					<p class="description">{$lang->about_attach_dependency}</p>
 				</td>
@@ -106,14 +96,20 @@
 			<tr>
 				<th scope="row"><em>{$lang->tag}</em></th>
 				<td>
-					<p><input type="text" name="tag" class="text_field" value="{htmlspecialchars($item_document->get('tags'))}" /></p>
+					<p><input type="text" name="tag" class="text_field"/></p>
 					<p class="description">{$lang->about_tag}</p>
 				</td>
 			</tr>
 			<tr class="last_child">
 				<th scope="row"><em>{$lang->attach_description}<img src="./img/bu_must.gif" alt="{$required_field}" /></em></th>
 				<td>
-					<div class="editor">{$editor}</div>
+					<div class="editor">
+						{$editor}
+						<!--// if the page is back by error, delete autosave data  -->
+						<script cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/skins/default/attach/1'">
+							jQuery('input[name="_saved_doc_title"], input[name="_saved_doc_content"]').val('');
+						</script>
+					</div>
 					<p class="description">{$lang->about_attach_description}</p>
 				</td>
 			</tr>
@@ -121,8 +117,8 @@
 		</fieldset>
 
 		<div class="btnArea">
-			<a href="{getUrl('act','dispArchivePackage','item_srl','')}" class="btn" style="float:left">{$lang->cmd_back}</a>
-			<input type="submit" value="{$lang->cmd_attach_file}" class="btn btn-inverse" />
+			<a href="{getUrl('act','dispArchivePackage')}" class="btn" style="float:left">{$lang->cmd_back}</a>
+			<input class="btn btn-inverse" type="submit" value="{$lang->cmd_attach_file}" />
 		</div>
 	</form>
 

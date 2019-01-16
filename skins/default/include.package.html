@@ -139,7 +139,7 @@
 
 
 	<!--@if(!$voted && $is_logged)-->
-	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/skins/xe_official/include.package/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
+	<div cond="$XE_VALIDATOR_MESSAGE && $XE_VALIDATOR_ID == 'modules/archive/skins/default/include.package/1'" class="message {$XE_VALIDATOR_MESSAGE_TYPE}">
 		<p>{$XE_VALIDATOR_MESSAGE}</p>
 	</div>
 
@@ -150,7 +150,7 @@
 	<input type="hidden" name="package_srl" value="{$package->get('package_srl')}" />
 	<input type="hidden" name="item_srl" value="{$package->get('item_srl')}" />
 	<input type="hidden" name="star_point" value="" />
-	<input type="hidden" name="xe_validator_id" value="modules/archive/skins/xe_official/include.package/1" />
+	<input type="hidden" name="xe_validator_id" value="modules/archive/skins/default/include.package/1" />
 	<input type="hidden" name="error_return_url" value="{getRequestUriByServerEnviroment()}#commentForm" />
 	<input type="hidden" name="success_return_url" value="{getRequestUriByServerEnviroment()}" />
 
