@@ -1,635 +1,613 @@
 <?php
-	/**
-	 * @class  archiveController
-	 * @author NAVER (developers@xpressengine.com)
-	 * @brief  archive controller class
-	 **/
+/**
+ * @class  archiveController
+ * @author NAVER (developers@xpressengine.com)
+ * @brief  archive controller class
+ **/
 
-	class archiveController extends archive {
+class archiveController extends archive {
 
-		function init() {
+	function init(){
+	}
+
+	function procArchiveInsertPackage(){
+		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+
+		$logged_info = Context::get('logged_info');
+		$site_module_info = Context::get('site_module_info');
+
+		$args = Context::gets('category_srl','title','license','homepage','description');
+		if($this->module_info->archive_use_path=='Y') $args->path = Context::get('path');
+		foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
+		if($args->homepage&&!preg_match('/:\/\//',$args->homepage)) $args->homepage = 'http://'.$args->homepage;
+
+		$args->package_srl = getNextSequence();
+		$args->module_srl = $this->module_srl;
+		$args->member_srl = $logged_info->member_srl;
+		$args->list_order = -1*$args->package_srl;
+
+		if($this->grant->manager) $args->status = 'accepted';
+		else{
+			$output = executeQuery('archive.isAcceptedOnce', $args);
+			if($output->data->count>0) $args->status = 'accepted';
 		}
 
-		function procArchiveInsertPackage() {
-			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+		$output = executeQuery('archive.insertPackage', $args);
+		if(!$output->toBool()) return $output;
 
-			$logged_info = Context::get('logged_info');
-			$site_module_info = Context::get('site_module_info');
-
-			$args = Context::gets('category_srl','title','license','homepage','description');
-			if($this->module_info->archive_use_path=='Y') $args->path = Context::get('path');
-			foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
-			if($args->homepage&&!preg_match('/:\/\//',$args->homepage)) $args->homepage = 'http://'.$args->homepage;
-
-			$args->package_srl = getNextSequence();
-			$args->module_srl = $this->module_srl;
-			$args->member_srl = $logged_info->member_srl;
-			$args->list_order = -1*$args->package_srl;
-
-			if($this->grant->manager) $args->status = 'accepted';
-			else {
-				$output = executeQuery('archive.isAcceptedOnce', $args);
-				if($output->data->count>0) $args->status = 'accepted';
-			}
-
-			$output = executeQuery('archive.insertPackage', $args);
-			if(!$output->toBool()) return $output;
-
-			if($this->module_info->archive_notify_mail) {
-				$message = '';
-				foreach($args as $key => $val) $message .= $key." : ".$val."<br/>\r\n";
-				$message.= "URL : ".getFullSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'), 'act', 'dispArchiveManage');
-				$this->notify($this->module_info->archive_notify_mail, Context::getLang('archive_new_notify_title'), $message);
-			}
-
-			$this->setMessage('success_registed');
-			$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackage','package_srl',$args->package_srl));
+		if($this->module_info->archive_notify_mail){
+			$message = '';
+			foreach($args as $key => $val) $message .= $key." : ".$val."<br/>\r\n";
+			$message.= "URL : ".getFullSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'), 'act', 'dispArchiveManage');
+			$this->notify($this->module_info->archive_notify_mail, Context::getLang('archive_new_notify_title'), $message);
 		}
 
-		function procArchiveModifyPackage() {
-			$oArchiveModel = getModel('archive');
+		$this->setMessage('success_registed');
+		$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackage','package_srl',$args->package_srl));
+	}
 
-			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+	function procArchiveModifyPackage(){
+		$oArchiveModel = getModel('archive');
 
-			$logged_info = Context::get('logged_info');
-			$site_module_info = Context::get('site_module_info');
+		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
 
-			$args = Context::gets('package_srl', 'title','license','homepage','description');
-			if($this->module_info->archive_use_path=='Y') $args->path = Context::get('path');
-			foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
-			if($args->homepage&&!preg_match('/:\/\//',$args->homepage)) $args->homepage = 'http://'.$args->homepage;
+		$logged_info = Context::get('logged_info');
+		$site_module_info = Context::get('site_module_info');
 
-			$selected_package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
-			if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
+		$args = Context::gets('package_srl', 'title','license','homepage','description');
+		if($this->module_info->archive_use_path=='Y') $args->path = Context::get('path');
+		foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
+		if($args->homepage&&!preg_match('/:\/\//',$args->homepage)) $args->homepage = 'http://'.$args->homepage;
 
-			if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
+		$selected_package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
+		if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
 
-			$category_srl = Context::get('package_category');
-			if($category_srl && $this->grant->manager) $args->category_srl = $category_srl;
+		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
 
-			$output = executeQuery('archive.modifyPackage', $args);
-			if(!$output->toBool()) return $output;
+		$category_srl = Context::get('package_category');
+		if($category_srl && $this->grant->manager) $args->category_srl = $category_srl;
 
-			if($this->module_info->archive_notify_mail) {
-				$message = '';
-				foreach($args as $key => $val) $message .= $key." : ".$val."<br/>\r\n";
-				$message.= "URL : ".getFullSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'), 'package_srl', $args->package_srl);
-				$this->notify($this->module_info->archive_notify_mail, Context::getLang('archive_modify_notify_title'), $message);
-			}
+		$output = executeQuery('archive.modifyPackage', $args);
+		if(!$output->toBool()) return $output;
 
-			$this->setMessage('success_updated');
-			$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackage','package_srl',$args->package_srl));
+		if($this->module_info->archive_notify_mail){
+			$message = '';
+			foreach($args as $key => $val) $message .= $key." : ".$val."<br/>\r\n";
+			$message.= "URL : ".getFullSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'), 'package_srl', $args->package_srl);
+			$this->notify($this->module_info->archive_notify_mail, Context::getLang('archive_modify_notify_title'), $message);
 		}
 
-		function procArchiveDeletePackage() {
-			$oArchiveModel = getModel('archive');
+		$this->setMessage('success_updated');
+		$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackage','package_srl',$args->package_srl));
+	}
 
-			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+	function procArchiveDeletePackage(){
+		$oArchiveModel = getModel('archive');
 
-			$logged_info = Context::get('logged_info');
-			$site_module_info = Context::get('site_module_info');
+		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
 
-			$package_srl = Context::get('package_srl');
-			if(!$package_srl) return new Object(-1,'msg_invalid_request');
-			$selected_package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
-			if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
+		$logged_info = Context::get('logged_info');
+		$site_module_info = Context::get('site_module_info');
 
-			if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
+		$package_srl = Context::get('package_srl');
+		if(!$package_srl) return new Object(-1,'msg_invalid_request');
+		$selected_package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
+		if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
 
-			$args->package_srl = $package_srl;
-			$args->module_srl = $this->module_srl;
-			$args->member_srl = $logged_info->member_srl;
-			$output = executeQuery('archive.deletePackage', $args);
-			if(!$output->toBool()) return $output;
+		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
 
-			if($this->module_info->archive_notify_mail) {
-				$message = '';
-				foreach($args as $key => $val) $message .= $key." : ".$val."<br/>\r\n";
-				$message.= "URL : ".getFullSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'), 'package_srl', $args->package_srl);
-				$this->notify($this->module_info->archive_notify_mail, Context::getLang('archive_delete_notify_title'), $message);
-			}
+		$args->package_srl = $package_srl;
+		$args->module_srl = $this->module_srl;
+		$args->member_srl = $logged_info->member_srl;
+		$output = executeQuery('archive.deletePackage', $args);
+		if(!$output->toBool()) return $output;
 
-
-			$this->setMessage('success_deleted');
-			$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackageList'));
+		if($this->module_info->archive_notify_mail){
+			$message = '';
+			foreach($args as $key => $val) $message .= $key." : ".$val."<br/>\r\n";
+			$message.= "URL : ".getFullSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'), 'package_srl', $args->package_srl);
+			$this->notify($this->module_info->archive_notify_mail, Context::getLang('archive_delete_notify_title'), $message);
 		}
 
-		function procArchiveChangeStatus() {
-			$oCommunicationController = getController('communication');
-			$oArchiveModel = getModel('archive');
+		$this->setMessage('success_deleted');
+		$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackageList'));
+	}
 
-			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+	function procArchiveChangeStatus(){
+		$oCommunicationController = getController('communication');
+		$oArchiveModel = getModel('archive');
 
-			$args = Context::gets('package_srl', 'status');
-			foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
-			if(!in_array($args->status, array('accepted','reservation','waiting'))) return new Object(-1,'msg_invalid_request');
+		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
 
-			$logged_info = Context::get('logged_info');
+		$args = Context::gets('package_srl', 'status');
+		foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
+		if(!in_array($args->status, array('accepted','reservation','waiting'))) return new Object(-1,'msg_invalid_request');
 
-			$selected_package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
-			if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
+		$logged_info = Context::get('logged_info');
 
-			if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
+		$selected_package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
+		if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
 
-			$output = executeQuery('archive.updatePackageStatus', $args);
-			if(!$output->toBool()) return $output;
+		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
 
-			$logged_info = Context::get('logged_info');
+		$output = executeQuery('archive.updatePackageStatus', $args);
+		if(!$output->toBool()) return $output;
 
-			$content = str_replace(array('[title]','[status]'), array($selected_package->title, Context::getLang('package_'.$args->status)), Context::getLang('archive_status_changed_message'));
-			$oCommunicationController->sendMessage($logged_info->member_srl, $selected_package->member_srl, Context::getLang('archive_status_changed'), $content, false);
+		$logged_info = Context::get('logged_info');
+
+		$content = str_replace(array('[title]','[status]'), array($selected_package->title, Context::getLang('package_'.$args->status)), Context::getLang('archive_status_changed_message'));
+		$oCommunicationController->sendMessage($logged_info->member_srl, $selected_package->member_srl, Context::getLang('archive_status_changed'), $content, false);
+	}
+
+	public function procArchiveAttachOneTime(){
+		$oDB = DB::getInstance();
+		$oDB->begin();
+
+		$output = $this->procArchiveAttach(FALSE);
+		if(!$output->toBool()){
+			$oDB->rollback();
+			return $output;
 		}
 
-		public function procArchiveAttachOneTime()
-		{
+		$item_srl = $output->get('item_srl');
+		Context::set('item_srl', $output->get('item_srl'), TRUE);
+		Context::set('document_srl', $output->get('document_srl'), TRUE);
+
+		$output = $this->procArchiveAttachFile(FALSE);
+		if(!$output->toBool()){
+			$oFileController = getController('file'); /* @var $oFileController fileController */
+			$oFileController->deleteFiles($item_srl);
+			$oDB->rollback();
+			return $output;
+		}
+
+		$oDB->commit();
+	}
+
+	function procArchiveAttach($proc = TRUE){
+		$oArchiveModel = getModel('archive');
+		$oDocumentController = getController('document');
+
+		$args = Context::gets('package_srl','version','description');
+		foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
+
+		$logged_info = Context::get('logged_info');
+
+		$selected_package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
+		if(!$selected_package) return new Object(-1,'msg_invalid_request');
+
+		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
+
+		if($proc){
 			$oDB = DB::getInstance();
 			$oDB->begin();
+		}
 
-			$output = $this->procArchiveAttach(FALSE);
-			if(!$output->toBool())
-			{
+		$doc_args = new stdClass();
+		$doc_args->document_srl = Context::get('document_srl') ? Context::get('document_srl') : getNextSequence();
+		$doc_args->category_srl = $selected_package->category_srl;
+		$doc_args->module_srl = $this->module_srl;
+		$doc_args->content = $args->description;
+		$doc_args->title = sprintf('%s ver. %s', $selected_package->title, $args->version);
+		$doc_args->list_order = $doc_args->document_srl*-1;
+		$doc_args->tags = Context::get('tag');
+		$doc_args->allow_comment = 'Y';
+		$doc_args->commentStatus = 'ALLOW';
+		$output = $oDocumentController->insertDocument($doc_args);
+		if(!$output->toBool()){
+			if($proc){
 				$oDB->rollback();
-				return $output;
 			}
+			return $output;
+		}
 
-			$item_srl = $output->get('item_srl');
-			Context::set('item_srl', $output->get('item_srl'), TRUE);
-			Context::set('document_srl', $output->get('document_srl'), TRUE);
-
-			$output = $this->procArchiveAttachFile(FALSE);
-			if(!$output->toBool())
-			{
-				$oFileController = getController('file'); /* @var $oFileController fileController */
-				$oFileController->deleteFiles($item_srl);
+		$args->item_srl = getNextSequence();
+		$args->document_srl = $doc_args->document_srl;
+		$args->module_srl = $this->module_srl;
+		$args->list_order = -1 * $args->item_srl;
+		$output = executeQuery('archive.insertItem', $args);
+		if(!$output->toBool()){
+			if($proc){
 				$oDB->rollback();
-				return $output;
 			}
+			return $output;
+		}
 
+		$pargs = new stdClass();
+		$pargs->module_srl = $this->module_srl;
+		$pargs->package_srl = $args->package_srl;
+		$pargs->update_order = $args->list_order;
+		$pargs->latest_item_srl = $args->item_srl;
+		$output = executeQuery('archive.updatePackage', $pargs);
+		if(!$output->toBool()){
+			if($proc){
+				$oDB->rollback();
+			}
+			return $output;
+		}
+
+		if($this->module_info->archive_notify_mail){
+			$message = '';
+			foreach($args as $key => $val) $message .= $key." : ".$val."<br/>\r\n";
+			$message.= "URL : ".getFullSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'), 'package_srl', $args->package_srl);
+			$this->notify($this->module_info->archive_notify_mail, Context::getLang('archive_attach_notify_title'), $message);
+		}
+
+		$this->insertDependency($this->module_srl, $args->package_srl, $args->item_srl, trim(Context::get('dependency')));
+
+		if($proc){
 			$oDB->commit();
 		}
 
-		function procArchiveAttach($proc = TRUE) {
-			$oArchiveModel = getModel('archive');
-			$oDocumentController = getController('document');
+		// for backward compatibility
+		$this->add('document_srl', $args->document_srl);
+		$this->add('item_srl', $args->item_srl);
 
-			$args = Context::gets('package_srl','version','description');
-			foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
+		return $this;
+	}
 
-			$logged_info = Context::get('logged_info');
+	function insertDependency($module_srl, $package_srl, $item_srl, $targets){
+		$args->module_srl = $module_srl;
+		$args->item_srl = $item_srl;
+		executeQuery('archive.deleteDependency', $args);
 
-			$selected_package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
-			if(!$selected_package) return new Object(-1,'msg_invalid_request');
-
-			if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
-
-			if($proc)
-			{
-				$oDB = DB::getInstance();
-				$oDB->begin();
-			}
-
-			$doc_args = new stdClass();
-			$doc_args->document_srl = Context::get('document_srl') ? Context::get('document_srl') : getNextSequence();
-			$doc_args->category_srl = $selected_package->category_srl;
-			$doc_args->module_srl = $this->module_srl;
-			$doc_args->content = $args->description;
-			$doc_args->title = sprintf('%s ver. %s', $selected_package->title, $args->version);
-			$doc_args->list_order = $doc_args->document_srl*-1;
-			$doc_args->tags = Context::get('tag');
-			$doc_args->allow_comment = 'Y';
-			$doc_args->commentStatus = 'ALLOW';
-			$output = $oDocumentController->insertDocument($doc_args);
-			if(!$output->toBool())
-			{
-				if($proc)
-				{
-					$oDB->rollback();
-				}
-				return $output;
-			}
-
-			$args->item_srl = getNextSequence();
-			$args->document_srl = $doc_args->document_srl;
-			$args->module_srl = $this->module_srl;
-			$args->list_order = -1 * $args->item_srl;
-			$output = executeQuery('archive.insertItem', $args);
-			if(!$output->toBool())
-			{
-				if($proc)
-				{
-					$oDB->rollback();
-				}
-				return $output;
-			}
-
-			$pargs = new stdClass();
-			$pargs->module_srl = $this->module_srl;
-			$pargs->package_srl = $args->package_srl;
-			$pargs->update_order = $args->list_order;
-			$pargs->latest_item_srl = $args->item_srl;
-			$output = executeQuery('archive.updatePackage', $pargs);
-			if(!$output->toBool())
-			{
-				if($proc)
-				{
-					$oDB->rollback();
-				}
-				return $output;
-			}
-
-			if($this->module_info->archive_notify_mail) {
-				$message = '';
-				foreach($args as $key => $val) $message .= $key." : ".$val."<br/>\r\n";
-				$message.= "URL : ".getFullSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'), 'package_srl', $args->package_srl);
-				$this->notify($this->module_info->archive_notify_mail, Context::getLang('archive_attach_notify_title'), $message);
-			}
-
-			$this->insertDependency($this->module_srl, $args->package_srl, $args->item_srl, trim(Context::get('dependency')));
-
-			if($proc)
-			{
-				$oDB->commit();
-			}
-
-			// for backward compatibility
-			$this->add('document_srl', $args->document_srl);
-			$this->add('item_srl', $args->item_srl);
-
-			return $this;
+		$d = explode(',',$targets);
+		$arr_dependency = array();
+		for($i=0,$c=count($d);$i<$c;$i++){
+			if((int)trim($d[$i])) $arr_dependency[] = (int)trim($d[$i]);
 		}
+		if(!count($arr_dependency)) return;
 
-		function insertDependency($module_srl, $package_srl, $item_srl, $targets) {
+		$dargs->item_srl = implode(',',$arr_dependency);
+		$output = executeQueryArray('archive.getItemByItemSrl', $dargs);
+		if(!$output->data) return;
+
+		foreach($output->data as $key => $val){
+			if($val->package_srl == $package_srl || $val->item_srl == $item_srl) continue;
+			unset($args);
 			$args->module_srl = $module_srl;
 			$args->item_srl = $item_srl;
-			executeQuery('archive.deleteDependency', $args);
+			$args->dependency_item_srl = $val->item_srl;
+			$output = executeQuery('archive.insertDependency', $args);
+		}
+	}
 
-			$d = explode(',',$targets);
-			$arr_dependency = array();
-			for($i=0,$c=count($d);$i<$c;$i++) {
-				if((int)trim($d[$i])) $arr_dependency[] = (int)trim($d[$i]);
+	function procArchiveAttachFile($proc = TRUE){
+		$oArchiveModel = getModel('archive');
+		$oFileController = getController('file');
+
+		$args = Context::gets('package_srl','item_srl','attach_file','attach_screenshot', 'latest_item_srl');
+		if(!$this->module_srl) return  new Object(-1,'msg_invalid_request');
+		if(!$args->package_srl || !$args->item_srl) return  new Object(-1,'msg_invalid_request');
+
+		if(!is_uploaded_file($args->attach_file['tmp_name']))  new Object(-1,'msg_invalid_request');
+		if(!is_uploaded_file($args->attach_screenshot['tmp_name']))  new Object(-1,'msg_invalid_request');
+
+		$logged_info = Context::get('logged_info');
+
+		$package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
+		if(!$package) return  new Object(-1,'msg_invalid_request');
+
+		if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return new Object(-1,'msg_not_permitted');
+
+		$output = executeQuery('archive.getItemByItemSrl', $args);
+		$item = $output->data;
+		if(!$item) return  new Object(-1,'msg_invalid_request');
+
+		$output = $oFileController->insertFile($args->attach_file, $this->module_srl, $args->item_srl);
+		if(!$output || !$output->toBool()){
+			if($proc){
+				$pargs->module_srl = $this->module_srl;
+				$pargs->package_srl = $args->package_srl;
+				$pargs->update_order = $args->latest_item_srl * -1;
+				$pargs->latest_item_srl = $args->latest_item_srl;
+				$poutput = executeQuery('archive.updatePackage', $pargs);
+
+				$dargs->module_srl = $this->module_srl;
+				$dargs->package_srl = $args->package_srl;
+				$dargs->item_srl = $args->item_srl;
+				$doutput = executeQuery('archive.deleteItems', $dargs);
 			}
-			if(!count($arr_dependency)) return;
 
-			$dargs->item_srl = implode(',',$arr_dependency);
-			$output = executeQueryArray('archive.getItemByItemSrl', $dargs);
-			if(!$output->data) return;
+			return $output;
+		}
+		$args->file_srl = $output->get('file_srl');
 
-			foreach($output->data as $key => $val) {
-				if($val->package_srl == $package_srl || $val->item_srl == $item_srl) continue;
-				unset($args);
-				$args->module_srl = $module_srl;
-				$args->item_srl = $item_srl;
-				$args->dependency_item_srl = $val->item_srl;
-				$output = executeQuery('archive.insertDependency', $args);
-			}
+		$output = $oFileController->insertFile($args->attach_screenshot, $this->module_srl, $args->item_srl);
+		if(!$output || !$output->toBool()) return $output;
+		$args->screenshot_url = $output->get('uploaded_filename');
+		if($args->screenshot_url) FileHandler::createImageFile($args->screenshot_url, $args->screenshot_url, 100,100,'jpg');
+
+		$args->module_srl = $this->module_srl;
+		$output = executeQuery('archive.updateItemFile', $args);
+		if(!$output->toBool()) return $output;
+
+		$oFileController->setFilesValid($args->item_srl);
+
+		$this->setMessage('success_registed');
+		$site_module_info = Context::get('site_module_info');
+		$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackage','package_srl',$args->package_srl));
+
+		return $this;
+	}
+
+	public function procArchiveModifyAttachOneTime(){
+		//return new Object(-1, 'test');
+		$oDB = DB::getInstance();
+		$oDB->begin();
+
+		$output = $this->procArchiveModifyAttach();
+		if(!$output->toBool()){
+			$oDB->rollback();
+			return $output;
 		}
 
-		function procArchiveAttachFile($proc = TRUE) {
-			$oArchiveModel = getModel('archive');
-			$oFileController = getController('file');
+		$output = $this->procArchiveModifyAttachFile();
+		if(!$output->toBool()){
+			$oDB->rollback();
+			return $output;
+		}
 
-			$args = Context::gets('package_srl','item_srl','attach_file','attach_screenshot', 'latest_item_srl');
-			if(!$this->module_srl) return  new Object(-1,'msg_invalid_request');
-			if(!$args->package_srl || !$args->item_srl) return  new Object(-1,'msg_invalid_request');
+		$oDB->commit();
+	}
 
+	function procArchiveModifyAttach(){
+		$oArchiveModel = getModel('archive');
+		$oFileController = getController('file');
+		$oDocumentController = getController('document');
+		$oDocumentModel = getModel('document');
+
+		$package_srl = Context::get('package_srl');
+		$item_srl = Context::get('item_srl');
+		$document_srl = Context::get('document_srl');
+		if(!$this->module_srl || !$package_srl || !$item_srl) return new Object(-1,'msg_invalid_request');
+
+		$logged_info = Context::get('logged_info');
+
+		$package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
+		if(!$package) return new Object(-1,'msg_invalid_request');
+
+		if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return new Object(-1,'msg_not_permitted');
+
+		$item = $oArchiveModel->getItem($this->module_srl, $package_srl, $item_srl);
+		if(!$item) return new Object(-1,'msg_invalid_request');
+		if($item->document_srl != $document_srl) return new Object(-1,'msg_invalid_request');
+
+		$args = new stdClass();
+		$args->module_srl = $this->module_srl;
+		$args->package_srl = $package_srl;
+		$args->item_srl = $item_srl;
+		$args->version = trim(Context::get('version'));
+		$args->description = trim(Context::get('description'));
+		$output = executeQuery('archive.updateItem', $args);
+		if(!$output->toBool()) return $output;
+
+		$doc_args->document_srl = $item->document_srl;
+		$doc_args->content = $args->description;
+		$doc_args->tags = Context::get('tag');
+		$doc_args->title = sprintf('%s ver. %s', $package->title, $args->version);
+		$doc_args->commentStatus = 'ALLOW';
+		$oDocumentController->updateDocument($oDocumentModel->getDocument($item->document_srl), $doc_args);
+
+		$this->insertDependency($this->module_srl, $args->package_srl, $args->item_srl, trim(Context::get('dependency')));
+
+		return $this;
+	}
+
+	function procArchiveModifyAttachFile(){
+		$oArchiveModel = getModel('archive');
+		$oFileController = getController('file');
+
+		$args = Context::gets('package_srl','item_srl','attach_file','attach_screenshot');
+		if(!$this->module_srl) return  new Object(-1,'msg_invalid_request');
+		if(!$args->package_srl || !$args->item_srl) return  new Object(-1,'msg_invalid_request');
+
+		$logged_info = Context::get('logged_info');
+
+		$package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
+		if(!$package) return  new Object(-1,'msg_invalid_request');
+
+		if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return new Object(-1,'msg_not_permitted');
+
+		$item = $oArchiveModel->getItem($this->module_srl, $args->package_srl, $args->item_srl);
+		if(!$item) return  new Object(-1,'msg_invalid_request');
+
+		if($args->attach_file['tmp_name']){
 			if(!is_uploaded_file($args->attach_file['tmp_name']))  new Object(-1,'msg_invalid_request');
-			if(!is_uploaded_file($args->attach_screenshot['tmp_name']))  new Object(-1,'msg_invalid_request');
-
-			$logged_info = Context::get('logged_info');
-
-			$package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
-			if(!$package) return  new Object(-1,'msg_invalid_request');
-
-			if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return new Object(-1,'msg_not_permitted');
-
-			$output = executeQuery('archive.getItemByItemSrl', $args);
-			$item = $output->data;
-			if(!$item) return  new Object(-1,'msg_invalid_request');
-
+			$oFileController->deleteFile($item->file_srl);
 			$output = $oFileController->insertFile($args->attach_file, $this->module_srl, $args->item_srl);
-			if(!$output || !$output->toBool())
-			{
-				if($proc)
-				{
-					$pargs->module_srl = $this->module_srl;
-					$pargs->package_srl = $args->package_srl;
-					$pargs->update_order = $args->latest_item_srl * -1;
-					$pargs->latest_item_srl = $args->latest_item_srl;
-					$poutput = executeQuery('archive.updatePackage', $pargs);
-
-					$dargs->module_srl = $this->module_srl;
-					$dargs->package_srl = $args->package_srl;
-					$dargs->item_srl = $args->item_srl;
-					$doutput = executeQuery('archive.deleteItems', $dargs);
-				}
-
-				return $output;
-			}
+			if(!$output || !$output->toBool()) return $output;
 			$args->file_srl = $output->get('file_srl');
+		}
 
+		if($args->attach_screenshot['tmp_name']){
+			if(!is_uploaded_file($args->attach_screenshot['tmp_name']))  new Object(-1,'msg_invalid_request');
 			$output = $oFileController->insertFile($args->attach_screenshot, $this->module_srl, $args->item_srl);
 			if(!$output || !$output->toBool()) return $output;
 			$args->screenshot_url = $output->get('uploaded_filename');
 			if($args->screenshot_url) FileHandler::createImageFile($args->screenshot_url, $args->screenshot_url, 100,100,'jpg');
+		}
 
-			$args->module_srl = $this->module_srl;
+		if($args->file_srl || $args->screenshot_url){
 			$output = executeQuery('archive.updateItemFile', $args);
 			if(!$output->toBool()) return $output;
-
-			$oFileController->setFilesValid($args->item_srl);
-
-			$this->setMessage('success_registed');
-			$site_module_info = Context::get('site_module_info');
-			$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackage','package_srl',$args->package_srl));
-
-			return $this;
 		}
 
-		public function procArchiveModifyAttachOneTime()
-		{
-			//return new Object(-1, 'test');
-			$oDB = DB::getInstance();
-			$oDB->begin();
+		$site_module_info = Context::get('site_module_info');
 
-			$output = $this->procArchiveModifyAttach();
-			if(!$output->toBool())
-			{
-				$oDB->rollback();
-				return $output;
-			}
+		$oFileController->setFilesValid($args->item_srl);
 
-			$output = $this->procArchiveModifyAttachFile();
-			if(!$output->toBool())
-			{
-				$oDB->rollback();
-				return $output;
-			}
+		$this->setMessage('success_registed');
+		$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackage','package_srl',$args->package_srl));
 
-			$oDB->commit();
-		}
-
-		function procArchiveModifyAttach() {
-			$oArchiveModel = getModel('archive');
-			$oFileController = getController('file');
-			$oDocumentController = getController('document');
-			$oDocumentModel = getModel('document');
-
-			$package_srl = Context::get('package_srl');
-			$item_srl = Context::get('item_srl');
-			$document_srl = Context::get('document_srl');
-			if(!$this->module_srl || !$package_srl || !$item_srl) return new Object(-1,'msg_invalid_request');
-
-			$logged_info = Context::get('logged_info');
-
-			$package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
-			if(!$package) return new Object(-1,'msg_invalid_request');
-
-			if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return new Object(-1,'msg_not_permitted');
-
-			$item = $oArchiveModel->getItem($this->module_srl, $package_srl, $item_srl);
-			if(!$item) return new Object(-1,'msg_invalid_request');
-			if($item->document_srl != $document_srl) return new Object(-1,'msg_invalid_request');
-
-			$args = new stdClass();
-			$args->module_srl = $this->module_srl;
-			$args->package_srl = $package_srl;
-			$args->item_srl = $item_srl;
-			$args->version = trim(Context::get('version'));
-			$args->description = trim(Context::get('description'));
-			$output = executeQuery('archive.updateItem', $args);
-			if(!$output->toBool()) return $output;
-
-			$doc_args->document_srl = $item->document_srl;
-			$doc_args->content = $args->description;
-			$doc_args->tags = Context::get('tag');
-			$doc_args->title = sprintf('%s ver. %s', $package->title, $args->version);
-			$doc_args->commentStatus = 'ALLOW';
-			$oDocumentController->updateDocument($oDocumentModel->getDocument($item->document_srl), $doc_args);
-
-			$this->insertDependency($this->module_srl, $args->package_srl, $args->item_srl, trim(Context::get('dependency')));
-
-			return $this;
-		}
-
-		function procArchiveModifyAttachFile() {
-			$oArchiveModel = getModel('archive');
-			$oFileController = getController('file');
-
-			$args = Context::gets('package_srl','item_srl','attach_file','attach_screenshot');
-			if(!$this->module_srl) return  new Object(-1,'msg_invalid_request');
-			if(!$args->package_srl || !$args->item_srl) return  new Object(-1,'msg_invalid_request');
-
-			$logged_info = Context::get('logged_info');
-
-			$package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
-			if(!$package) return  new Object(-1,'msg_invalid_request');
-
-			if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return new Object(-1,'msg_not_permitted');
-
-			$item = $oArchiveModel->getItem($this->module_srl, $args->package_srl, $args->item_srl);
-			if(!$item) return  new Object(-1,'msg_invalid_request');
-
-			if($args->attach_file['tmp_name']) {
-				if(!is_uploaded_file($args->attach_file['tmp_name']))  new Object(-1,'msg_invalid_request');
-				$oFileController->deleteFile($item->file_srl);
-				$output = $oFileController->insertFile($args->attach_file, $this->module_srl, $args->item_srl);
-				if(!$output || !$output->toBool()) return $output;
-				$args->file_srl = $output->get('file_srl');
-			}
-
-			if($args->attach_screenshot['tmp_name']) {
-				if(!is_uploaded_file($args->attach_screenshot['tmp_name']))  new Object(-1,'msg_invalid_request');
-				$output = $oFileController->insertFile($args->attach_screenshot, $this->module_srl, $args->item_srl);
-				if(!$output || !$output->toBool()) return $output;
-				$args->screenshot_url = $output->get('uploaded_filename');
-				if($args->screenshot_url) FileHandler::createImageFile($args->screenshot_url, $args->screenshot_url, 100,100,'jpg');
-			}
-
-			if($args->file_srl || $args->screenshot_url) {
-				$output = executeQuery('archive.updateItemFile', $args);
-				if(!$output->toBool()) return $output;
-			}
-
-			$site_module_info = Context::get('site_module_info');
-
-			$oFileController->setFilesValid($args->item_srl);
-
-
-			$this->setMessage('success_registed');
-			$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','dispArchivePackage','package_srl',$args->package_srl));
-
-			return $this;
-		}
-
-		function procArchiveDeleteAttach() {
-			$oArchiveModel = getModel('archive');
-			$oFileController = getController('file');
-			$oDocumentController = getController('document');
-
-			$package_srl = Context::get('package_srl');
-			$item_srl = Context::get('item_srl');
-			if(!$this->module_srl || !$package_srl || !$item_srl) return new Object(-1,'msg_invalid_request');
-
-			$logged_info = Context::get('logged_info');
-
-			$item = $oArchiveModel->getItem($this->module_srl, $package_srl, $item_srl);
-			if(!$item) return new Object(-1,'msg_invalid_request');
-
-			$package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
-			if(!$package || (!$this->grant->manager && $package->member_srl != $logged_info->member_srl)) return new Object(-1,'msg_invalid_request');
-
-			$args->module_srl = $this->module_srl;
-			$args->package_srl = $package_srl;
-			$args->item_srl = $item_srl;
-			$output = executeQuery('archive.deleteItems', $args);
-			if(!$output->toBool()) return $output;
-
-			$output = $oFileController->deleteFiles($item_srl);
-			if(!$output->toBool()) return $output;
-
-			$output = executeQuery('archive.getMaxLatestItem', $args);
-			if(!$output->toBool()) return $output;
-			$latest_item_srl = (int)$output->data->item_srl;
-
-			$largs->module_srl = $this->module_srl;
-			$largs->package_srl = $package_srl;
-			$largs->latest_item_srl = $latest_item_srl;
-			$output = executeQuery('archive.updatePackageLatestItem', $largs);
-			if(!$output->toBool()) return $output;
-
-			$output = $oDocumentController->deleteDocument($item->document_srl);
-			if(!$output->toBool()) return $output;
-		}
-
-		function triggerUpdateDownloadedCount($obj) {
-			$oArchiveModel = getModel('archive');
-
-			$args->item_srl = $obj->upload_target_srl;
-			$output = executeQuery('archive.getItemByItemSrl', $args);
-			if(!$output->data) return new Object();
-
-			$item = $output->data;
-			$args->package_srl = $item->package_srl;
-			$args->module_srl = $item->module_srl;
-
-			$output = executeQuery('archive.updateItemDownloadedCount', $args);
-			$output = executeQuery('archive.updatePackageDownloadedCount', $args);
-
-			return new Object();
-		}
-
-		function procArchiveInsertComment() {
-			$oCommentController = getController('comment');
-			$oArchiveModel = getModel('archive');
-
-			if(!$this->grant->write_comment) return new Object(-1, 'msg_not_permitted');
-			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
-
-			$args = Context::gets('package_srl', 'item_srl','star_point','content');
-			$args->module_srl = $this->module_srl;
-
-			if(!$args->star_point || !$args->content || !$args->package_srl || !$args->item_srl) return new Object(-1,'msg_invalid_request');
-
-			$item = $oArchiveModel->getItem($args->module_srl, $args->package_srl, $args->item_srl);
-			if(!$item->document_srl) return new Object(-1,'msg_invalid_request');
-
-			$package = $oArchiveModel->getPackage($args->module_srl, $args->package_srl);
-			if(!$package->package_srl) return new Object(-1,'msg_invalid_request');
-
-			$logged_info = Context::get('logged_info');
-			if($oArchiveModel->hasVoted($this->module_srl, $package->package_srl, $args->item_srl, $logged_info->member_srl)) return new Object(-1,'msg_already_voted');
-
-			$args->document_srl = $item->document_srl;
-			$args->comment_srl = getNextSequence();
-			$args->content = nl2br($args->content);
-			$args->voted_count = $args->star_point;
-			$output = $oCommentController->insertComment($args);
-			if(!$output->toBool()) return $output;
-
-			$star_args->module_srl = $this->module_srl;
-			$star_args->package_srl = $args->package_srl;
-			$star_args->voted = $package->voted+$args->star_point;
-			$output = executeQuery('archive.plusPackageStar', $star_args);
-
-			$star_args->module_srl = $this->module_srl;
-			$star_args->package_srl = $args->package_srl;
-			$star_args->item_srl = $args->item_srl;
-			$star_args->voted = $item->voted+$args->star_point;
-			$output = executeQuery('archive.plusItemStar', $star_args);
-
-			$this->setMessage('success_registed');
-
-			if(Context::get('success_return_url'))
-			{
-				$this->setRedirectUrl(Context::get('success_return_url') . '#comment_' . $args->comment_srl);
-			}
-			else
-			{
-				$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','','package_srl',$item->package_srl) . '#comment_' . $args->comment_srl);
-			}
-		}
-
-		function procArchiveDeleteComment() {
-			$oCommentModel = getModel('comment');
-			$oCommentController = getController('comment');
-			$oArchiveModel = getModel('archive');
-
-			if(!$this->grant->write_comment) return new Object(-1, 'msg_not_permitted');
-			if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
-
-			$args = Context::gets('package_srl', 'item_srl','comment_srl');
-			$args->module_srl = $this->module_srl;
-
-			$comment_srl = Context::get('comment_srl');
-			$oComment = $oCommentModel->getComment($comment_srl);
-			if(!$oComment->isExists() || !$oComment->isGranted()) return new Object(-1,'msg_invalid_request');
-
-			$item = $oArchiveModel->getItem($args->module_srl, $args->package_srl, $args->item_srl);
-			if(!$item->document_srl) return new Object(-1,'msg_invalid_request');
-
-			$package = $oArchiveModel->getPackage($args->module_srl, $args->package_srl);
-			if(!$package->package_srl) return new Object(-1,'msg_invalid_request');
-
-			$output = $oCommentController->deleteComment($oComment->comment_srl);
-			if(!$output->toBool()) return $output;
-
-			$p_args->module_srl = $this->module_srl;
-			$p_args->package_srl = $package->package_srl;
-			$output = executeQuery('archive.getPackageSumStars', $p_args);
-
-			$p_star_args->module_srl = $this->module_srl;
-			$p_star_args->package_srl = $args->package_srl;
-			$p_star_args->voted = (int)$output->data->voted;
-			$p_star_args->voter = (int)$output->data->voter;
-			$output = executeQuery('archive.minusPackageStar', $p_star_args);
-
-			$p_args->module_srl = $this->module_srl;
-			$p_args->package_srl = $package->package_srl;
-			$p_args->item_srl = $item->item_srl;
-			$output = executeQuery('archive.getItemSumStars', $p_args);
-
-			$i_star_args->module_srl = $this->module_srl;
-			$i_star_args->package_srl = $args->package_srl;
-			$i_star_args->item_srl = $args->item_srl;
-			$i_star_args->voted = (int)$output->data->voted;
-			$i_star_args->voter = (int)$output->data->voter;
-			$output = executeQuery('archive.minusItemStar', $i_star_args);
-
-			$this->setRedirectUrl(getSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','','package_srl',Context::get('package_srl')));
-		}
-
-		function procArchiveDeleteItem() {
-			return $this->procArchiveDeleteAttach();
-		}
-
-		function notify($email_address, $title, $message) {
-			$oMail = new Mail();
-			$oMail->setTitle($title);
-			$oMail->setContent($message);
-			$oMail->setSender('XE Archive Notifier',$email_address);
-			$oMail->setReceiptor( null, $email_address);
-			$oMail->send();
-		}
-
+		return $this;
 	}
-?>
+
+	function procArchiveDeleteAttach(){
+		$oArchiveModel = getModel('archive');
+		$oFileController = getController('file');
+		$oDocumentController = getController('document');
+
+		$package_srl = Context::get('package_srl');
+		$item_srl = Context::get('item_srl');
+		if(!$this->module_srl || !$package_srl || !$item_srl) return new Object(-1,'msg_invalid_request');
+
+		$logged_info = Context::get('logged_info');
+
+		$item = $oArchiveModel->getItem($this->module_srl, $package_srl, $item_srl);
+		if(!$item) return new Object(-1,'msg_invalid_request');
+
+		$package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
+		if(!$package || (!$this->grant->manager && $package->member_srl != $logged_info->member_srl)) return new Object(-1,'msg_invalid_request');
+
+		$args->module_srl = $this->module_srl;
+		$args->package_srl = $package_srl;
+		$args->item_srl = $item_srl;
+		$output = executeQuery('archive.deleteItems', $args);
+		if(!$output->toBool()) return $output;
+
+		$output = $oFileController->deleteFiles($item_srl);
+		if(!$output->toBool()) return $output;
+
+		$output = executeQuery('archive.getMaxLatestItem', $args);
+		if(!$output->toBool()) return $output;
+		$latest_item_srl = (int)$output->data->item_srl;
+
+		$largs->module_srl = $this->module_srl;
+		$largs->package_srl = $package_srl;
+		$largs->latest_item_srl = $latest_item_srl;
+		$output = executeQuery('archive.updatePackageLatestItem', $largs);
+		if(!$output->toBool()) return $output;
+
+		$output = $oDocumentController->deleteDocument($item->document_srl);
+		if(!$output->toBool()) return $output;
+	}
+
+	function triggerUpdateDownloadedCount($obj){
+		$oArchiveModel = getModel('archive');
+
+		$args->item_srl = $obj->upload_target_srl;
+		$output = executeQuery('archive.getItemByItemSrl', $args);
+		if(!$output->data) return new Object();
+
+		$item = $output->data;
+		$args->package_srl = $item->package_srl;
+		$args->module_srl = $item->module_srl;
+
+		$output = executeQuery('archive.updateItemDownloadedCount', $args);
+		$output = executeQuery('archive.updatePackageDownloadedCount', $args);
+
+		return new Object();
+	}
+
+	function procArchiveInsertComment(){
+		$oCommentController = getController('comment');
+		$oArchiveModel = getModel('archive');
+
+		if(!$this->grant->write_comment) return new Object(-1, 'msg_not_permitted');
+		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+
+		$args = Context::gets('package_srl', 'item_srl','star_point','content');
+		$args->module_srl = $this->module_srl;
+
+		if(!$args->star_point || !$args->content || !$args->package_srl || !$args->item_srl) return new Object(-1,'msg_invalid_request');
+
+		$item = $oArchiveModel->getItem($args->module_srl, $args->package_srl, $args->item_srl);
+		if(!$item->document_srl) return new Object(-1,'msg_invalid_request');
+
+		$package = $oArchiveModel->getPackage($args->module_srl, $args->package_srl);
+		if(!$package->package_srl) return new Object(-1,'msg_invalid_request');
+
+		$logged_info = Context::get('logged_info');
+		if($oArchiveModel->hasVoted($this->module_srl, $package->package_srl, $args->item_srl, $logged_info->member_srl)) return new Object(-1,'msg_already_voted');
+
+		$args->document_srl = $item->document_srl;
+		$args->comment_srl = getNextSequence();
+		$args->content = nl2br($args->content);
+		$args->voted_count = $args->star_point;
+		$output = $oCommentController->insertComment($args);
+		if(!$output->toBool()) return $output;
+
+		$star_args->module_srl = $this->module_srl;
+		$star_args->package_srl = $args->package_srl;
+		$star_args->voted = $package->voted+$args->star_point;
+		$output = executeQuery('archive.plusPackageStar', $star_args);
+
+		$star_args->module_srl = $this->module_srl;
+		$star_args->package_srl = $args->package_srl;
+		$star_args->item_srl = $args->item_srl;
+		$star_args->voted = $item->voted+$args->star_point;
+		$output = executeQuery('archive.plusItemStar', $star_args);
+
+		$this->setMessage('success_registed');
+
+		if(Context::get('success_return_url')){
+			$this->setRedirectUrl(Context::get('success_return_url') . '#comment_' . $args->comment_srl);
+		}
+		else{
+			$this->setRedirectUrl(getNotEncodedSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','','package_srl',$item->package_srl) . '#comment_' . $args->comment_srl);
+		}
+	}
+
+	function procArchiveDeleteComment(){
+		$oCommentModel = getModel('comment');
+		$oCommentController = getController('comment');
+		$oArchiveModel = getModel('archive');
+
+		if(!$this->grant->write_comment) return new Object(-1, 'msg_not_permitted');
+		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+
+		$args = Context::gets('package_srl', 'item_srl','comment_srl');
+		$args->module_srl = $this->module_srl;
+
+		$comment_srl = Context::get('comment_srl');
+		$oComment = $oCommentModel->getComment($comment_srl);
+		if(!$oComment->isExists() || !$oComment->isGranted()) return new Object(-1,'msg_invalid_request');
+
+		$item = $oArchiveModel->getItem($args->module_srl, $args->package_srl, $args->item_srl);
+		if(!$item->document_srl) return new Object(-1,'msg_invalid_request');
+
+		$package = $oArchiveModel->getPackage($args->module_srl, $args->package_srl);
+		if(!$package->package_srl) return new Object(-1,'msg_invalid_request');
+
+		$output = $oCommentController->deleteComment($oComment->comment_srl);
+		if(!$output->toBool()) return $output;
+
+		$p_args->module_srl = $this->module_srl;
+		$p_args->package_srl = $package->package_srl;
+		$output = executeQuery('archive.getPackageSumStars', $p_args);
+
+		$p_star_args->module_srl = $this->module_srl;
+		$p_star_args->package_srl = $args->package_srl;
+		$p_star_args->voted = (int)$output->data->voted;
+		$p_star_args->voter = (int)$output->data->voter;
+		$output = executeQuery('archive.minusPackageStar', $p_star_args);
+
+		$p_args->module_srl = $this->module_srl;
+		$p_args->package_srl = $package->package_srl;
+		$p_args->item_srl = $item->item_srl;
+		$output = executeQuery('archive.getItemSumStars', $p_args);
+
+		$i_star_args->module_srl = $this->module_srl;
+		$i_star_args->package_srl = $args->package_srl;
+		$i_star_args->item_srl = $args->item_srl;
+		$i_star_args->voted = (int)$output->data->voted;
+		$i_star_args->voter = (int)$output->data->voter;
+		$output = executeQuery('archive.minusItemStar', $i_star_args);
+
+		$this->setRedirectUrl(getSiteUrl($site_module_info->domain, '', 'mid', Context::get('mid'),'act','','package_srl',Context::get('package_srl')));
+	}
+
+	function procArchiveDeleteItem(){
+		return $this->procArchiveDeleteAttach();
+	}
+
+	function notify($email_address, $title, $message){
+		$oMail = new Mail();
+		$oMail->setTitle($title);
+		$oMail->setContent($message);
+		$oMail->setSender('XE Archive Notifier',$email_address);
+		$oMail->setReceiptor( null, $email_address);
+		$oMail->send();
+	}
+}

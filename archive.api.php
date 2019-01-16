@@ -1,8 +1,13 @@
 <?php
-class archiveAPI extends archive
-{
-	function getArchiveItems()
-	{
+/**
+ * @class  archiveAPI
+ * @author NAVER (developers@xpressengine.com)
+ * @brief  archive API class
+ **/
+
+class archiveAPI extends archive {
+
+	function getArchiveItems(){
 		$package_srl = Context::get('package_srl');
 		$module_srl = Context::get('module_srl');
 		$mid = Context::get('mid');
@@ -11,8 +16,7 @@ class archiveAPI extends archive
 
 		if(!$package_srl) return;
 		if(!$site_srl) $site_srl = 0;
-		if(!$module_srl && $mid)
-		{
+		if(!$module_srl && $mid){
 			$oModuleModel = getModel('module');
 			$module_info = $oModuleModel->getModuleInfoByMid($mid, $site_srl);
 			$module_srl = $module_info->module_srl;
@@ -29,8 +33,7 @@ class archiveAPI extends archive
 		$this->add('items', $output->data);
 	}
 
-	function dispArchiveIndex(&$oModule)
-	{
+	function dispArchiveIndex(&$oModule){
 		$package_categories = Context::get('package_categories');
 		$oModule->add('package_categories',$package_categories);
 
@@ -38,20 +41,17 @@ class archiveAPI extends archive
 		$oModule->add('categories',$categories);
 
 		$latest_package = Context::get('latest_package');
-		if($latest_package)
-		{
+		if($latest_package){
 			$oModule->add('latest_package',$latest_package);
 			$package = Context::get('package');
 			$oModule->add('package',$package);
 
 			$items = Context::get('items');
-			if($items)
-			{
+			if($items){
 				$oModule->add('items',$items);
 			}
 		}
-		else
-		{
+		else{
 			$item_list = Context::get('item_list');
 			$page_navigation = Context::get('page_navigation');
 			$order_target = Context::get('order_target');
@@ -63,7 +63,4 @@ class archiveAPI extends archive
 			$oModule->add('order_target',$order_target);
 		}
 	}
-
-
 }
-?>
