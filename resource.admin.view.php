@@ -1,7 +1,7 @@
 <?php
 	/**
 	 * @class  resourceAdminView
-	 * @author NHN (developers@xpressengine.com)
+	 * @author NAVER (developers@xpressengine.com)
 	 * @brief  resource admin view class
 	 **/
 

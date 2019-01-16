@@ -1,7 +1,7 @@
 <?php
 	/**
 	 * @class  resourceModel
-	 * @author NHN (developers@xpressengine.com)
+	 * @author NAVER (developers@xpressengine.com)
 	 * @brief  resource model class
 	 **/
 

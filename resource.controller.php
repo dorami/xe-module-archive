@@ -1,7 +1,7 @@
 <?php
 	/**
 	 * @class  resourceController
-	 * @author NHN (developers@xpressengine.com)
+	 * @author NAVER (developers@xpressengine.com)
 	 * @brief  resource controller class
 	 **/
 
