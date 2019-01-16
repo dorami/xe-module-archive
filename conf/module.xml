@@ -15,71 +15,71 @@
 		</grant>
 	</grants>
 	<permissions>
-		<permission action="dispResourceInsertPackage" target="member" />
-		<permission action="dispResourceModifyPackage" target="member" />
-		<permission action="dispResourceDeletePackage" target="member" />
-		<permission action="dispResourcePackage" target="member" />
-		<permission action="dispResourcePackageList" target="member" />
-		<permission action="dispResourceAttach" target="member" />
-		<permission action="dispResourceModifyAttach" target="member" />
-		<permission action="dispResourceManage" target="manager" />
+		<permission action="dispArchiveInsertPackage" target="member" />
+		<permission action="dispArchiveModifyPackage" target="member" />
+		<permission action="dispArchiveDeletePackage" target="member" />
+		<permission action="dispArchivePackage" target="member" />
+		<permission action="dispArchivePackageList" target="member" />
+		<permission action="dispArchiveAttach" target="member" />
+		<permission action="dispArchiveModifyAttach" target="member" />
+		<permission action="dispArchiveManage" target="manager" />
 
-		<permission action="dispResourceSearchDependency" target="member" />
+		<permission action="dispArchiveSearchDependency" target="member" />
 
-		<permission action="procResourceRequestPackage" target="member" />
-		<permission action="procResourceInsertPackage" target="member" />
-		<permission action="procResourceDeletePackage" target="member" />
-		<permission action="procResourceAttach" target="member" />
-		<permission action="procResourceModifyAttach" target="member" />
-		<permission action="procResourceAttachFile" target="member" />
-		<permission action="procResourceModifyAttachFile" target="member" />
-		<permission action="procResourceDeleteAttach" target="member" />
-		<permission action="procResourceInsertComment" target="member" />
-		<permission action="procResourceDeleteComment" target="member" />
-		<permission action="procResourceChangeStatus" target="manager" />
-		<permission action="procResourceDeleteItem" target="manager" />
+		<permission action="procArchiveRequestPackage" target="member" />
+		<permission action="procArchiveInsertPackage" target="member" />
+		<permission action="procArchiveDeletePackage" target="member" />
+		<permission action="procArchiveAttach" target="member" />
+		<permission action="procArchiveModifyAttach" target="member" />
+		<permission action="procArchiveAttachFile" target="member" />
+		<permission action="procArchiveModifyAttachFile" target="member" />
+		<permission action="procArchiveDeleteAttach" target="member" />
+		<permission action="procArchiveInsertComment" target="member" />
+		<permission action="procArchiveDeleteComment" target="member" />
+		<permission action="procArchiveChangeStatus" target="manager" />
+		<permission action="procArchiveDeleteItem" target="manager" />
 	</permissions>
 	<actions>
-		<action name="dispResourceIndex" type="view" standalone="true" index="true" />
-		<action name="dispResourceInsertPackage" type="view" />
-		<action name="dispResourceModifyPackage" type="view" />
-		<action name="dispResourceDeletePackage" type="view" />
-		<action name="dispResourceAttach" type="view" />
-		<action name="dispResourceModifyAttach" type="view" />
-		<action name="dispResourcePackage" type="view" />
-		<action name="dispResourcePackageList" type="view" />
-		<action name="dispResourceManage" type="view" />
+		<action name="dispArchiveIndex" type="view" standalone="true" index="true" />
+		<action name="dispArchiveInsertPackage" type="view" />
+		<action name="dispArchiveModifyPackage" type="view" />
+		<action name="dispArchiveDeletePackage" type="view" />
+		<action name="dispArchiveAttach" type="view" />
+		<action name="dispArchiveModifyAttach" type="view" />
+		<action name="dispArchivePackage" type="view" />
+		<action name="dispArchivePackageList" type="view" />
+		<action name="dispArchiveManage" type="view" />
 
-		<action name="dispResourceSearchDependency" type="view" />
+		<action name="dispArchiveSearchDependency" type="view" />
 
-		<action name="procResourceInsertPackage" type="controller" ruleset="insertPackage" />
-		<action name="procResourceModifyPackage" type="controller" ruleset="modifyPackage" />
-		<action name="procResourceDeletePackage" type="controller" ruleset="deletePackage" />
-		<action name="procResourceAttachOneTime" type="controller" ruleset="attachOneTime" />
-		<action name="procResourceModifyAttachOneTime" type="controller" ruleset="modifyAttachOneTime" />
-		<action name="procResourceAttach" type="controller" ruleset="attach" />
-		<action name="procResourceModifyAttach" type="controller" ruleset="modifyAttach" />
-		<action name="procResourceAttachFile" type="controller" ruleset="attachFile" />
-		<action name="procResourceModifyAttachFile" type="controller" ruleset="modifyAttachFile" />
-		<action name="procResourceDeleteAttach" type="controller" ruleset="deleteAttach" />
-		<action name="procResourceInsertComment" type="controller" ruleset="insertComment" />
-		<action name="procResourceDeleteComment" type="controller" ruleset="deleteComment" />
-		<action name="procResourceChangeStatus" type="controller" ruleset="changeStatus" />
+		<action name="procArchiveInsertPackage" type="controller" ruleset="insertPackage" />
+		<action name="procArchiveModifyPackage" type="controller" ruleset="modifyPackage" />
+		<action name="procArchiveDeletePackage" type="controller" ruleset="deletePackage" />
+		<action name="procArchiveAttachOneTime" type="controller" ruleset="attachOneTime" />
+		<action name="procArchiveModifyAttachOneTime" type="controller" ruleset="modifyAttachOneTime" />
+		<action name="procArchiveAttach" type="controller" ruleset="attach" />
+		<action name="procArchiveModifyAttach" type="controller" ruleset="modifyAttach" />
+		<action name="procArchiveAttachFile" type="controller" ruleset="attachFile" />
+		<action name="procArchiveModifyAttachFile" type="controller" ruleset="modifyAttachFile" />
+		<action name="procArchiveDeleteAttach" type="controller" ruleset="deleteAttach" />
+		<action name="procArchiveInsertComment" type="controller" ruleset="insertComment" />
+		<action name="procArchiveDeleteComment" type="controller" ruleset="deleteComment" />
+		<action name="procArchiveChangeStatus" type="controller" ruleset="changeStatus" />
 
-		<action name="dispResourceAdminList" type="view" standalone="true" admin_index="true" />
-		<action name="dispResourceAdminInsert" type="view" standalone="true" setup_index="true" />
-		<action name="dispResourceAdminCategory" type="view" />
-		<action name="dispResourceAdminGrant" type="view" standalone="true" />
-		<action name="dispResourceAdminAdditions" type="view" standalone="true" />
-		<action name="dispResourceAdminSkin" type="view" standalone="true" />
-		<action name="dispResourceAdminMobileSkin" type="view" />
-		<action name="dispResourceAdminDelete" type="view" standalone="true" />
+		<action name="dispArchiveAdminList" type="view" standalone="true" admin_index="true" />
+		<action name="dispArchiveAdminInsert" type="view" standalone="true" setup_index="true" />
+		<action name="dispArchiveAdminCategory" type="view" />
+		<action name="dispArchiveAdminGrant" type="view" standalone="true" />
+		<action name="dispArchiveAdminAdditions" type="view" standalone="true" />
+		<action name="dispArchiveAdminSkin" type="view" standalone="true" />
+		<action name="dispArchiveAdminMobileSkin" type="view" />
+		<action name="dispArchiveAdminDelete" type="view" standalone="true" />
 
-		<action name="procResourceAdminInsert" type="controller" standalone="true" rulset="insertResource" />
-		<action name="procResourceAdminDelete" type="controller" standalone="true" rulset="deleteResource" />
-		<action name="procResourceAdminDeletePackage" type="controller" standalone="true" ruleset="deletePackage" />
-		<action name="getResourceItems" type="api" standalone="true" />
+		<action name="procArchiveAdminInsert" type="controller" standalone="true" rulset="insertArchive" />
+		<action name="procArchiveAdminDelete" type="controller" standalone="true" rulset="deleteArchive" />
+		<action name="procArchiveAdminDeletePackage" type="controller" standalone="true" ruleset="deletePackage" />
+		<action name="getArchiveItems" type="api" standalone="true" />
 
-		<action name="dispResourceCategory" type="mobile" />
+		<action name="dispArchiveCategory" type="mobile" />
 	</actions>
 </module>

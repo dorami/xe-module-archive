@@ -1,1 +1,1 @@
-# xe-module-resource
+# xe-module-archive

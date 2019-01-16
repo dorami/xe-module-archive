@@ -11,8 +11,8 @@
 	<description xml:lang="zh-CN">存档服务模块</description>
 	<description xml:lang="zh-TW">存檔服務模塊</description>
 
-	<version>1.7.0</version>
-	<date>2013-03-20</date>
+	<version>1.0.0</version>
+	<date>2019-01-01</date>
 	<category>service</category>
 
 	<author email_address="developers@xpressengine.com" link="http://xpressengine.com/">
