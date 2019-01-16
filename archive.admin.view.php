@@ -106,7 +106,7 @@ class archiveAdminView extends archive {
 	function dispArchiveAdminDelete(){
 		$oDocumentModel = getModel('document');
 
-		if(!$this->module_info) return new Object(-1,'msg_invalid_request');
+		if(!$this->module_info) return $this->makeObject(-1,'msg_invalid_request');
 
 		Context::set('document_count', $oDocumentModel->getDocumentCount($this->module_info->module_srl));
 	}

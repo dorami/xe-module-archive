@@ -14,7 +14,7 @@ class archive extends ModuleObject {
 
 		$oModuleController->insertTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after');
 		$oModuleController->insertTrigger('menu.getModuleListInSitemap', 'archive', 'model', 'triggerModuleListInSitemap', 'after');
-		return new Object();
+		return $this->makeObject();
 	}
 
 	function checkUpdate(){
@@ -36,7 +36,7 @@ class archive extends ModuleObject {
 		if(!$oModuleModel->getTrigger('menu.getModuleListInSitemap', 'archive', 'model', 'triggerModuleListInSitemap', 'after'))
 			$oModuleController->insertTrigger('menu.getModuleListInSitemap', 'archive', 'model', 'triggerModuleListInSitemap', 'after');
 
-		return new Object(0, 'success_updated');
+		return $this->makeObject(0, 'success_updated');
 	}
 
 	function moduleUninstall(){
@@ -45,16 +45,20 @@ class archive extends ModuleObject {
 		if($oModuleModel->getTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after'))
 			$oModuleController->deleteTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after');
 		$output = executeQueryArray("archive.getAllArchives");
-		if(!$output->data) return new Object();
+		if(!$output->data) return $this->makeObject();
 
 		set_time_limit(0);
 		foreach($output->data as $archive){
 			$oModuleController->deleteModule($archive->module_srl);
 		}
 
-		return new Object();
+		return $this->makeObject();
 	}
 
 	function recompileCache(){
+	}
+	
+	public function makeObject($code = 0, $message = 'success'){
+		return class_exists('BaseObject') ? new BaseObject($code, $message) : new Object($code, $message);
 	}
 }

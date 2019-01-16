@@ -11,14 +11,14 @@ class archiveController extends archive {
 	}
 
 	function procArchiveInsertPackage(){
-		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+		if(!$this->module_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$logged_info = Context::get('logged_info');
 		$site_module_info = Context::get('site_module_info');
 
 		$args = Context::gets('category_srl','title','license','homepage','description');
 		if($this->module_info->archive_use_path=='Y') $args->path = Context::get('path');
-		foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
+		foreach($args as $key => $val) if(!trim($val)) return $this->makeObject(-1,'msg_invalid_request');
 		if($args->homepage&&!preg_match('/:\/\//',$args->homepage)) $args->homepage = 'http://'.$args->homepage;
 
 		$args->package_srl = getNextSequence();
@@ -49,20 +49,20 @@ class archiveController extends archive {
 	function procArchiveModifyPackage(){
 		$oArchiveModel = getModel('archive');
 
-		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+		if(!$this->module_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$logged_info = Context::get('logged_info');
 		$site_module_info = Context::get('site_module_info');
 
 		$args = Context::gets('package_srl', 'title','license','homepage','description');
 		if($this->module_info->archive_use_path=='Y') $args->path = Context::get('path');
-		foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
+		foreach($args as $key => $val) if(!trim($val)) return $this->makeObject(-1,'msg_invalid_request');
 		if($args->homepage&&!preg_match('/:\/\//',$args->homepage)) $args->homepage = 'http://'.$args->homepage;
 
 		$selected_package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
-		if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
+		if(!$selected_package->package_srl) return $this->makeObject(-1,'msg_invalid_request');
 
-		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
+		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return $this->makeObject(-1,'msg_not_permitted');
 
 		$category_srl = Context::get('package_category');
 		if($category_srl && $this->grant->manager) $args->category_srl = $category_srl;
@@ -84,17 +84,17 @@ class archiveController extends archive {
 	function procArchiveDeletePackage(){
 		$oArchiveModel = getModel('archive');
 
-		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+		if(!$this->module_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$logged_info = Context::get('logged_info');
 		$site_module_info = Context::get('site_module_info');
 
 		$package_srl = Context::get('package_srl');
-		if(!$package_srl) return new Object(-1,'msg_invalid_request');
+		if(!$package_srl) return $this->makeObject(-1,'msg_invalid_request');
 		$selected_package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
-		if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
+		if(!$selected_package->package_srl) return $this->makeObject(-1,'msg_invalid_request');
 
-		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
+		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return $this->makeObject(-1,'msg_not_permitted');
 
 		$args->package_srl = $package_srl;
 		$args->module_srl = $this->module_srl;
@@ -117,18 +117,18 @@ class archiveController extends archive {
 		$oCommunicationController = getController('communication');
 		$oArchiveModel = getModel('archive');
 
-		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+		if(!$this->module_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$args = Context::gets('package_srl', 'status');
-		foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
-		if(!in_array($args->status, array('accepted','reservation','waiting'))) return new Object(-1,'msg_invalid_request');
+		foreach($args as $key => $val) if(!trim($val)) return $this->makeObject(-1,'msg_invalid_request');
+		if(!in_array($args->status, array('accepted','reservation','waiting'))) return $this->makeObject(-1,'msg_invalid_request');
 
 		$logged_info = Context::get('logged_info');
 
 		$selected_package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
-		if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
+		if(!$selected_package->package_srl) return $this->makeObject(-1,'msg_invalid_request');
 
-		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
+		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return $this->makeObject(-1,'msg_not_permitted');
 
 		$output = executeQuery('archive.updatePackageStatus', $args);
 		if(!$output->toBool()) return $output;
@@ -169,14 +169,14 @@ class archiveController extends archive {
 		$oDocumentController = getController('document');
 
 		$args = Context::gets('package_srl','version','description');
-		foreach($args as $key => $val) if(!trim($val)) return new Object(-1,'msg_invalid_request');
+		foreach($args as $key => $val) if(!trim($val)) return $this->makeObject(-1,'msg_invalid_request');
 
 		$logged_info = Context::get('logged_info');
 
 		$selected_package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
-		if(!$selected_package) return new Object(-1,'msg_invalid_request');
+		if(!$selected_package) return $this->makeObject(-1,'msg_invalid_request');
 
-		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return new Object(-1,'msg_not_permitted');
+		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return $this->makeObject(-1,'msg_not_permitted');
 
 		if($proc){
 			$oDB = DB::getInstance();
@@ -288,7 +288,7 @@ class archiveController extends archive {
 		$package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
 		if(!$package) return  new Object(-1,'msg_invalid_request');
 
-		if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return new Object(-1,'msg_not_permitted');
+		if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return $this->makeObject(-1,'msg_not_permitted');
 
 		$output = executeQuery('archive.getItemByItemSrl', $args);
 		$item = $output->data;
@@ -332,7 +332,7 @@ class archiveController extends archive {
 	}
 
 	public function procArchiveModifyAttachOneTime(){
-		//return new Object(-1, 'test');
+		//return $this->makeObject(-1, 'test');
 		$oDB = DB::getInstance();
 		$oDB->begin();
 
@@ -360,18 +360,18 @@ class archiveController extends archive {
 		$package_srl = Context::get('package_srl');
 		$item_srl = Context::get('item_srl');
 		$document_srl = Context::get('document_srl');
-		if(!$this->module_srl || !$package_srl || !$item_srl) return new Object(-1,'msg_invalid_request');
+		if(!$this->module_srl || !$package_srl || !$item_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$logged_info = Context::get('logged_info');
 
 		$package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
-		if(!$package) return new Object(-1,'msg_invalid_request');
+		if(!$package) return $this->makeObject(-1,'msg_invalid_request');
 
-		if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return new Object(-1,'msg_not_permitted');
+		if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return $this->makeObject(-1,'msg_not_permitted');
 
 		$item = $oArchiveModel->getItem($this->module_srl, $package_srl, $item_srl);
-		if(!$item) return new Object(-1,'msg_invalid_request');
-		if($item->document_srl != $document_srl) return new Object(-1,'msg_invalid_request');
+		if(!$item) return $this->makeObject(-1,'msg_invalid_request');
+		if($item->document_srl != $document_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$args = new stdClass();
 		$args->module_srl = $this->module_srl;
@@ -407,7 +407,7 @@ class archiveController extends archive {
 		$package = $oArchiveModel->getPackage($this->module_srl, $args->package_srl);
 		if(!$package) return  new Object(-1,'msg_invalid_request');
 
-		if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return new Object(-1,'msg_not_permitted');
+		if(!$this->grant->manager && $logged_info->member_srl != $package->member_srl) return $this->makeObject(-1,'msg_not_permitted');
 
 		$item = $oArchiveModel->getItem($this->module_srl, $args->package_srl, $args->item_srl);
 		if(!$item) return  new Object(-1,'msg_invalid_request');
@@ -450,15 +450,15 @@ class archiveController extends archive {
 
 		$package_srl = Context::get('package_srl');
 		$item_srl = Context::get('item_srl');
-		if(!$this->module_srl || !$package_srl || !$item_srl) return new Object(-1,'msg_invalid_request');
+		if(!$this->module_srl || !$package_srl || !$item_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$logged_info = Context::get('logged_info');
 
 		$item = $oArchiveModel->getItem($this->module_srl, $package_srl, $item_srl);
-		if(!$item) return new Object(-1,'msg_invalid_request');
+		if(!$item) return $this->makeObject(-1,'msg_invalid_request');
 
 		$package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
-		if(!$package || (!$this->grant->manager && $package->member_srl != $logged_info->member_srl)) return new Object(-1,'msg_invalid_request');
+		if(!$package || (!$this->grant->manager && $package->member_srl != $logged_info->member_srl)) return $this->makeObject(-1,'msg_invalid_request');
 
 		$args->module_srl = $this->module_srl;
 		$args->package_srl = $package_srl;
@@ -488,7 +488,7 @@ class archiveController extends archive {
 
 		$args->item_srl = $obj->upload_target_srl;
 		$output = executeQuery('archive.getItemByItemSrl', $args);
-		if(!$output->data) return new Object();
+		if(!$output->data) return $this->makeObject();
 
 		$item = $output->data;
 		$args->package_srl = $item->package_srl;
@@ -497,29 +497,29 @@ class archiveController extends archive {
 		$output = executeQuery('archive.updateItemDownloadedCount', $args);
 		$output = executeQuery('archive.updatePackageDownloadedCount', $args);
 
-		return new Object();
+		return $this->makeObject();
 	}
 
 	function procArchiveInsertComment(){
 		$oCommentController = getController('comment');
 		$oArchiveModel = getModel('archive');
 
-		if(!$this->grant->write_comment) return new Object(-1, 'msg_not_permitted');
-		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+		if(!$this->grant->write_comment) return $this->makeObject(-1, 'msg_not_permitted');
+		if(!$this->module_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$args = Context::gets('package_srl', 'item_srl','star_point','content');
 		$args->module_srl = $this->module_srl;
 
-		if(!$args->star_point || !$args->content || !$args->package_srl || !$args->item_srl) return new Object(-1,'msg_invalid_request');
+		if(!$args->star_point || !$args->content || !$args->package_srl || !$args->item_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$item = $oArchiveModel->getItem($args->module_srl, $args->package_srl, $args->item_srl);
-		if(!$item->document_srl) return new Object(-1,'msg_invalid_request');
+		if(!$item->document_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$package = $oArchiveModel->getPackage($args->module_srl, $args->package_srl);
-		if(!$package->package_srl) return new Object(-1,'msg_invalid_request');
+		if(!$package->package_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$logged_info = Context::get('logged_info');
-		if($oArchiveModel->hasVoted($this->module_srl, $package->package_srl, $args->item_srl, $logged_info->member_srl)) return new Object(-1,'msg_already_voted');
+		if($oArchiveModel->hasVoted($this->module_srl, $package->package_srl, $args->item_srl, $logged_info->member_srl)) return $this->makeObject(-1,'msg_already_voted');
 
 		$args->document_srl = $item->document_srl;
 		$args->comment_srl = getNextSequence();
@@ -554,21 +554,21 @@ class archiveController extends archive {
 		$oCommentController = getController('comment');
 		$oArchiveModel = getModel('archive');
 
-		if(!$this->grant->write_comment) return new Object(-1, 'msg_not_permitted');
-		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+		if(!$this->grant->write_comment) return $this->makeObject(-1, 'msg_not_permitted');
+		if(!$this->module_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$args = Context::gets('package_srl', 'item_srl','comment_srl');
 		$args->module_srl = $this->module_srl;
 
 		$comment_srl = Context::get('comment_srl');
 		$oComment = $oCommentModel->getComment($comment_srl);
-		if(!$oComment->isExists() || !$oComment->isGranted()) return new Object(-1,'msg_invalid_request');
+		if(!$oComment->isExists() || !$oComment->isGranted()) return $this->makeObject(-1,'msg_invalid_request');
 
 		$item = $oArchiveModel->getItem($args->module_srl, $args->package_srl, $args->item_srl);
-		if(!$item->document_srl) return new Object(-1,'msg_invalid_request');
+		if(!$item->document_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$package = $oArchiveModel->getPackage($args->module_srl, $args->package_srl);
-		if(!$package->package_srl) return new Object(-1,'msg_invalid_request');
+		if(!$package->package_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$output = $oCommentController->deleteComment($oComment->comment_srl);
 		if(!$output->toBool()) return $output;

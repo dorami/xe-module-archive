@@ -80,11 +80,11 @@ class archiveAdminController extends archive {
 		$oFileController = getController('file');
 
 		$site_module_info = Context::get('site_module_info');
-		if(!$this->module_srl) return new Object(-1,'msg_invalid_request');
+		if(!$this->module_srl) return $this->makeObject(-1,'msg_invalid_request');
 		$package_srl = Context::get('package_srl');
-		if(!$package_srl) return new Object(-1,'msg_invalid_request');
+		if(!$package_srl) return $this->makeObject(-1,'msg_invalid_request');
 		$selected_package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
-		if(!$selected_package->package_srl) return new Object(-1,'msg_invalid_request');
+		if(!$selected_package->package_srl) return $this->makeObject(-1,'msg_invalid_request');
 
 		$args->package_srl = $package_srl;
 		$args->module_srl = $this->module_srl;
