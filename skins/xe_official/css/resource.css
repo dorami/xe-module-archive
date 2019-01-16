@@ -131,8 +131,8 @@ table td.info ul li.downloaded{background:url(../img/iconFile.gif) no-repeat lef
 table td.info ul li.info{color:#aaa;font-family:tahoma;font-size:11px}
 table td.info ul li.info a{text-decoration:none;color:#aaa}
 table td.info ul li.author  a{text-decoration:none;color:#444}
-.text_field{width:300px;height:15px;padding-top:1px;border:1px solid #b6ad9b;font-size:12px} 
-.text_area{width:300px;height:80px;padding-top:1px;border:1px solid #b6ad9b;font-size:12px} 
+.text_field{width:300px;height:15px;padding-top:1px;border:1px solid #b6ad9b;font-size:12px}
+.text_area{width:300px;height:80px;padding-top:1px;border:1px solid #b6ad9b;font-size:12px}
 .select_field{width:300px}
 .controll_box{text-align:center;margin:20px}
 .button_box{text-align:right;margin-bottom:20px}

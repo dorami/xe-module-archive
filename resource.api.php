@@ -1,7 +1,7 @@
 <?php
-class resourceAPI extends resource 
+class resourceAPI extends resource
 {
-	function getResourceItems() 
+	function getResourceItems()
 	{
 		$package_srl = Context::get('package_srl');
 		$module_srl = Context::get('module_srl');
@@ -21,11 +21,11 @@ class resourceAPI extends resource
 		if(!$module_srl) return;
 
 		$oModel = &getModel('resource');
-        $args->module_srl = $module_srl;
-        $args->package_srl = $package_srl;
-        if($list_count) $args->list_count = $list_count;
+		$args->module_srl = $module_srl;
+		$args->package_srl = $package_srl;
+		if($list_count) $args->list_count = $list_count;
 
-        $output = executeQueryArray('resource.getItemsWithDocument', $args);
+		$output = executeQueryArray('resource.getItemsWithDocument', $args);
 		$this->add('items', $output->data);
 	}
 
@@ -33,7 +33,7 @@ class resourceAPI extends resource
 	{
 		$package_categories = Context::get('package_categories');
 		$oModule->add('package_categories',$package_categories);
-		
+
 		$categories = Context::get('categories');
 		$oModule->add('categories',$categories);
 
@@ -54,8 +54,8 @@ class resourceAPI extends resource
 		{
 			$item_list = Context::get('item_list');
 			$page_navigation = Context::get('page_navigation');
-        	$order_target = Context::get('order_target');
-        	$order_type = Context::get('order_type');
+			$order_target = Context::get('order_target');
+			$order_type = Context::get('order_type');
 
 			$oModule->add('item_list',$item_list);
 			$oModule->add('page_navigation',$page_navigation);

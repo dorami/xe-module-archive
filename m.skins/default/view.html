@@ -53,7 +53,7 @@
 		<h3>{$lang->resource_estimate} <em>[{number_format($package->getCommentCount())}]</em></h3>
 		<button type="button" class="tg" title="open/close"></button>
 	</div>
-    <!--@if($package->getCommentCount())-->
+	<!--@if($package->getCommentCount())-->
 	<ul class="rp tgo open">
 		{@ $_comment_list = $package->getComments() }
 		<!--@foreach($_comment_list as $key => $comment)-->
@@ -72,7 +72,7 @@
 		<h3>{$lang->cmd_estimate}</h3>
 		<button type="button" class="tg" title="open/close"></button>
 	</div>
-    <form action="./" method="post" onsubmit="return procFilter(this, insert_comment)" class="ff tgo open" >
+	<form action="./" method="post" onsubmit="return procFilter(this, insert_comment)" class="ff tgo open" >
 		<input type="hidden" name="vid" value="{$vid}" />
 		<input type="hidden" name="mid" value="{$mid}" />
 		<input type="hidden" name="package_srl" value="{$package->get('package_srl')}" />

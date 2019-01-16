@@ -55,7 +55,7 @@
 		<ul>
 			<li><a href="{getUrl('page','')}">&lsaquo; {$lang->first_page}</a></li>
 			<!--@while($page_no = $page_navigation->getNextPage())-->
-			<li><a href="{getUrl('page',$page_no)}" class="x_active"|cond="$page == $page_no">{$page_no}</a></li> 
+			<li><a href="{getUrl('page',$page_no)}" class="x_active"|cond="$page == $page_no">{$page_no}</a></li>
 			<!--@end-->
 			<li><a href="{getUrl('page',$page_navigation->last_page)}">{$lang->last_page} &rsaquo;</a></li>
 		</ul>

@@ -7,7 +7,7 @@
 		<em>{$package->get('nick_name')}</em>
 		<span>{zdate($package->get('item_regdate'), "Y-m-d H:i")}</span>
 	</div>
-    <p class="p">{nl2br(htmlspecialchars($package->get('package_description')))}</p>
+	<p class="p">{nl2br(htmlspecialchars($package->get('package_description')))}</p>
 	<div class="co">
 		<dl class="xv">
 			<dt>{$lang->package_category}</dt>
@@ -50,7 +50,7 @@
 	<div class="hx">
 		<h3>{$lang->resource_estimate} <em>[{number_format($package->getCommentCount())}]</em> <button type="button" class="tg" title="open/close"></button></h3>
 	</div>
-    <!--@if($package->getCommentCount())-->
+	<!--@if($package->getCommentCount())-->
 	<ul class="rp tgo open">
 		{@ $_comment_list = $package->getComments() }
 		<!--@foreach($_comment_list as $key => $comment)-->
@@ -69,11 +69,11 @@
 	<div class="hx">
 		<h3 id="rw">{$lang->cmd_estimate} <button type="button" class="tg" title="open/close"></button></h3>
 	</div>
-    <form action="./" method="post" onsubmit="return procFilter(this, insert_comment)" class="sn tgo open" >
-    <input type="hidden" name="vid" value="{$vid}" />
-    <input type="hidden" name="mid" value="{$mid}" />
-    <input type="hidden" name="package_srl" value="{$package->get('package_srl')}" />
-    <input type="hidden" name="item_srl" value="{$package->get('item_srl')}" />
+	<form action="./" method="post" onsubmit="return procFilter(this, insert_comment)" class="sn tgo open" >
+	<input type="hidden" name="vid" value="{$vid}" />
+	<input type="hidden" name="mid" value="{$mid}" />
+	<input type="hidden" name="package_srl" value="{$package->get('package_srl')}" />
+	<input type="hidden" name="item_srl" value="{$package->get('item_srl')}" />
 		<ul>
 			<li>
 				<strong class="db">{$lang->star_point}</strong>

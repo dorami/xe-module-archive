@@ -31,7 +31,7 @@
 		<!--@foreach($item_list as $key => $val)-->
 		<li>
 			<a href="{getUrl('package_srl', $val->package_srl)}">
-				<img src="{$val->item_screenshot_url}" alt="" class="th" /> 
+				<img src="{$val->item_screenshot_url}" alt="" class="th" />
 				<span class="title">
 					<!--@if($val->category_srl)-->{$categories[$val->category_srl]->title} &rsaquo; <!--@end-->
 					<strong>{htmlspecialchars($val->title)} ver. {htmlspecialchars($val->item_version)}</strong>
@@ -54,13 +54,13 @@
 		<!--@end-->
 	</ul>
 	<div class="pn">
-        <!--@if($page != 1)-->
-		<a href="{getUrl('page',$page-1,'document_srl','','division',$division,'last_division',$last_division,'entry','')}" class="prev">{$lang->cmd_prev}</a> 
-        <!--@endif-->
-        <strong>{$page} / {$page_navigation->last_page}</strong>
-        <!--@if($page != $page_navigation->last_page)-->
+		<!--@if($page != 1)-->
+		<a href="{getUrl('page',$page-1,'document_srl','','division',$division,'last_division',$last_division,'entry','')}" class="prev">{$lang->cmd_prev}</a>
+		<!--@endif-->
+		<strong>{$page} / {$page_navigation->last_page}</strong>
+		<!--@if($page != $page_navigation->last_page)-->
 		<a href="{getUrl('page',$page+1,'document_srl','','division',$division,'last_division',$last_division,'entry','')}" class="next">{$lang->cmd_next}</a>
-        <!--@endif-->
+		<!--@endif-->
 	</div>
 </div>
 <script>

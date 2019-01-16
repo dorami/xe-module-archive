@@ -66,17 +66,15 @@
 		<ul>
 			<li><a href="{getUrl('page','','module_srl','')}">&lsaquo; {$lang->first_page}</a> </li>
 			<!--@while($page_no = $page_navigation->getNextPage())-->
-			<li class="x_active"|cond="$page == $page_no"><a href="{getUrl('page',$page_no,'module_srl','')}">{$page_no}</a></li> 
+			<li class="x_active"|cond="$page == $page_no"><a href="{getUrl('page',$page_no,'module_srl','')}">{$page_no}</a></li>
 			<!--@end-->
 			<li><a href="{getUrl('page',$page_navigation->last_page,'module_srl','')}">{$lang->last_page} &rsaquo;</a></li>
 		</ul>
 	</div>
-    <span class="x_btn-group x_pull-right">
+	<span class="x_btn-group x_pull-right">
 		<a class="x_btn x_btn-inverse" href="{getUrl('act','dispResourceAdminInsert','module_srl','')}">{$lang->cmd_make}</a>
-        <a class="x_btn" href="{getUrl('','module','module','act','dispModuleAdminModuleSetup')}" onclick="doCartSetup(this.href); return false;">{$lang->cmd_setup}</a>
-        <a class="x_btn" href="{getUrl('','module','module','act','dispModuleAdminModuleAdditionSetup')}" onclick="doCartSetup(this.href); return false;">{$lang->cmd_addition_setup}</a>
-        <a class="x_btn" href="{getUrl('','module','module','act','dispModuleAdminModuleGrantSetup')}" onclick="doCartSetup(this.href); return false;">{$lang->cmd_manage_grant}</a>
-    </span>
+		<a class="x_btn" href="{getUrl('','module','module','act','dispModuleAdminModuleSetup')}" onclick="doCartSetup(this.href); return false;">{$lang->cmd_setup}</a>
+		<a class="x_btn" href="{getUrl('','module','module','act','dispModuleAdminModuleAdditionSetup')}" onclick="doCartSetup(this.href); return false;">{$lang->cmd_addition_setup}</a>
+		<a class="x_btn" href="{getUrl('','module','module','act','dispModuleAdminModuleGrantSetup')}" onclick="doCartSetup(this.href); return false;">{$lang->cmd_manage_grant}</a>
+	</span>
 </div>
-
-

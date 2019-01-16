@@ -5,17 +5,17 @@
 
 		function init()
 		{
-            $oDocumentModel = &getModel('document');
-             Context::set('categories', $oDocumentModel->getCategoryList($this->module_srl));
+			$oDocumentModel = &getModel('document');
+			 Context::set('categories', $oDocumentModel->getCategoryList($this->module_srl));
 
-            $template_path = sprintf("%sm.skins/%s/",$this->module_path, $this->module_info->mskin);
-            if(!is_dir($template_path)||!$this->module_info->mskin) {
-                $this->module_info->mskin = 'default';
-                $template_path = sprintf("%sm.skins/%s/",$this->module_path, $this->module_info->mskin);
-            }
-            $this->setTemplatePath($template_path);
+			$template_path = sprintf("%sm.skins/%s/",$this->module_path, $this->module_info->mskin);
+			if(!is_dir($template_path)||!$this->module_info->mskin) {
+				$this->module_info->mskin = 'default';
+				$template_path = sprintf("%sm.skins/%s/",$this->module_path, $this->module_info->mskin);
+			}
+			$this->setTemplatePath($template_path);
 
-            Context::addJsFile($this->module_path.'tpl/js/resource.js');
+			Context::addJsFile($this->module_path.'tpl/js/resource.js');
 		}
 
 		function dispResourceIndex()
