@@ -25,6 +25,7 @@ class archiveAPI extends archive {
 		if(!$module_srl) return;
 
 		$oModel = getModel('archive');
+		$args = new stdClass();
 		$args->module_srl = $module_srl;
 		$args->package_srl = $package_srl;
 		if($list_count) $args->list_count = $list_count;

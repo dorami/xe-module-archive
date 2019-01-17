@@ -96,6 +96,7 @@ class archiveController extends archive {
 
 		if(!$this->grant->manager && $logged_info->member_srl != $selected_package->member_srl) return $this->makeObject(-1,'msg_not_permitted');
 
+		$args = new stdClass();
 		$args->package_srl = $package_srl;
 		$args->module_srl = $this->module_srl;
 		$args->member_srl = $logged_info->member_srl;
@@ -247,6 +248,7 @@ class archiveController extends archive {
 	}
 
 	function insertDependency($module_srl, $package_srl, $item_srl, $targets){
+		$args = new stdClass();
 		$args->module_srl = $module_srl;
 		$args->item_srl = $item_srl;
 		executeQuery('archive.deleteDependency', $args);
@@ -264,7 +266,7 @@ class archiveController extends archive {
 
 		foreach($output->data as $key => $val){
 			if($val->package_srl == $package_srl || $val->item_srl == $item_srl) continue;
-			unset($args);
+			$args = new stdClass();
 			$args->module_srl = $module_srl;
 			$args->item_srl = $item_srl;
 			$args->dependency_item_srl = $val->item_srl;
@@ -297,12 +299,14 @@ class archiveController extends archive {
 		$output = $oFileController->insertFile($args->attach_file, $this->module_srl, $args->item_srl);
 		if(!$output || !$output->toBool()){
 			if($proc){
+				$pargs = new stdClass();
 				$pargs->module_srl = $this->module_srl;
 				$pargs->package_srl = $args->package_srl;
 				$pargs->update_order = $args->latest_item_srl * -1;
 				$pargs->latest_item_srl = $args->latest_item_srl;
 				$poutput = executeQuery('archive.updatePackage', $pargs);
 
+				$dargs = new stdClass();
 				$dargs->module_srl = $this->module_srl;
 				$dargs->package_srl = $args->package_srl;
 				$dargs->item_srl = $args->item_srl;
@@ -460,6 +464,7 @@ class archiveController extends archive {
 		$package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
 		if(!$package || (!$this->grant->manager && $package->member_srl != $logged_info->member_srl)) return $this->makeObject(-1,'msg_invalid_request');
 
+		$args = new stdClass();
 		$args->module_srl = $this->module_srl;
 		$args->package_srl = $package_srl;
 		$args->item_srl = $item_srl;
@@ -486,6 +491,7 @@ class archiveController extends archive {
 	function triggerUpdateDownloadedCount($obj){
 		$oArchiveModel = getModel('archive');
 
+		$args = new stdClass();
 		$args->item_srl = $obj->upload_target_srl;
 		$output = executeQuery('archive.getItemByItemSrl', $args);
 		if(!$output->data) return $this->makeObject();
@@ -528,11 +534,13 @@ class archiveController extends archive {
 		$output = $oCommentController->insertComment($args);
 		if(!$output->toBool()) return $output;
 
+		$star_args = new stdClass();
 		$star_args->module_srl = $this->module_srl;
 		$star_args->package_srl = $args->package_srl;
 		$star_args->voted = $package->voted+$args->star_point;
 		$output = executeQuery('archive.plusPackageStar', $star_args);
 
+		$star_args = new stdClass();
 		$star_args->module_srl = $this->module_srl;
 		$star_args->package_srl = $args->package_srl;
 		$star_args->item_srl = $args->item_srl;
@@ -573,21 +581,25 @@ class archiveController extends archive {
 		$output = $oCommentController->deleteComment($oComment->comment_srl);
 		if(!$output->toBool()) return $output;
 
+		$p_args = new stdClass();
 		$p_args->module_srl = $this->module_srl;
 		$p_args->package_srl = $package->package_srl;
 		$output = executeQuery('archive.getPackageSumStars', $p_args);
 
+		$p_star_args = new stdClass();
 		$p_star_args->module_srl = $this->module_srl;
 		$p_star_args->package_srl = $args->package_srl;
 		$p_star_args->voted = (int)$output->data->voted;
 		$p_star_args->voter = (int)$output->data->voter;
 		$output = executeQuery('archive.minusPackageStar', $p_star_args);
 
+		$p_args = new stdClass();
 		$p_args->module_srl = $this->module_srl;
 		$p_args->package_srl = $package->package_srl;
 		$p_args->item_srl = $item->item_srl;
 		$output = executeQuery('archive.getItemSumStars', $p_args);
 
+		$i_star_args = new stdClass();
 		$i_star_args->module_srl = $this->module_srl;
 		$i_star_args->package_srl = $args->package_srl;
 		$i_star_args->item_srl = $args->item_srl;

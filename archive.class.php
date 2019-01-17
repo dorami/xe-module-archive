@@ -41,7 +41,7 @@ class archive extends ModuleObject {
 
 	function moduleUninstall(){
 		$oModuleModel = getModel('module');
-		$oModuleController =& getController('module');
+		$oModuleController = getController('module');
 		if($oModuleModel->getTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after'))
 			$oModuleController->deleteTrigger('file.downloadFile', 'archive', 'controller', 'triggerUpdateDownloadedCount', 'after');
 		$output = executeQueryArray("archive.getAllArchives");

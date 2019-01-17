@@ -34,6 +34,7 @@ class archiveView extends archive {
 		$page = Context::get('page');
 
 		if($document_srl && !$package_srl){
+			$args = new stdClass();
 			$args->document_srl = $document_srl;
 			$output = executeQuery('archive.getItemByDocumentSrl',$args);
 			if($output->data){
@@ -43,6 +44,7 @@ class archiveView extends archive {
 		}
 
 		if($package_srl){
+			$args = new stdClass();
 			$args->module_srl = $this->module_srl;
 			$args->package_srl = $package_srl;
 			$output = executeQuery('archive.getLatestItem', $args);
@@ -51,6 +53,7 @@ class archiveView extends archive {
 		}
 
 		if($latest_package){
+			$args = new stdClass();
 			$args->module_srl = $this->module_srl;
 			$args->package_srl = $package_srl;
 			$args->item_srl = $item_srl;

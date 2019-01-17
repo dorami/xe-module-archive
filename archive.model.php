@@ -11,6 +11,7 @@ class archiveModel extends archive {
 	}
 
 	function getPackageList($module_srl, $status = null, $category_srl = null, $member_srl = null, $page = 1){
+		$args = new stdClass();
 		$args->module_srl = $module_srl;
 
 		if(!is_null($status) && in_array($status, array('accepted','reservation','waiting'))) $args->status = $status;
@@ -29,6 +30,7 @@ class archiveModel extends archive {
 	}
 
 	function getPackage($module_srl, $package_srl, $member_srl = null){
+		$args = new stdClass();
 		$args->module_srl = $module_srl;
 		$args->package_srl = $package_srl;
 		if(!is_null($member_srl)) $args->member_srl = $member_srl;
@@ -38,6 +40,8 @@ class archiveModel extends archive {
 
 	function getItem($module_srl, $package_srl, $item_srl){
 		$oFileModel = getModel('file');
+
+		$args = new stdClass();
 		$args->module_srl = $module_srl;
 		$args->package_srl = $package_srl;
 		$args->item_srl = $item_srl;
@@ -52,6 +56,7 @@ class archiveModel extends archive {
 	function getItems($module_srl, $package_srl){
 		$oFileModel = getModel('file');
 
+		$args = new stdClass();
 		$args->module_srl = $module_srl;
 		$args->package_srl = $package_srl;
 
@@ -69,6 +74,7 @@ class archiveModel extends archive {
 	function getLatestItemList($module_srl, $category_srl = null, $childs = null, $member_srl = null, $search_keyword = null, $order_target = 'package.update_order', $order_type = 'asc', $page = 1, $list_count = null){
 		$oFileModel = getModel('file');
 
+		$args = new stdClass();
 		$args->module_srl = $module_srl;
 
 		if(!is_null($childs) && preg_match('/^([0-9])([0-9,]+)([0-9])$/', $childs)) $args->category_srl = $childs;
@@ -110,6 +116,7 @@ class archiveModel extends archive {
 	}
 
 	function getLatestItem($package_srl){
+		$args = new stdClass();
 		$args->package_srl = $package_srl;
 		$output = executeQuery('archive.getLatestItem', $args);
 		return $output->data;
@@ -117,6 +124,7 @@ class archiveModel extends archive {
 	}
 
 	function getDependency($module_srl, $item_srl){
+		$args = new stdClass();
 		$args->module_srl = $module_srl;
 		$args->item_srl = $item_srl;
 		$output = executeQueryArray('archive.getDependency', $args);
@@ -124,6 +132,7 @@ class archiveModel extends archive {
 	}
 
 	function hasVoted($module_srl, $package_srl, $item_srl, $member_srl){
+		$args = new stdClass();
 		$args->module_srl = $module_srl;
 		$args->package_srl = $package_srl;
 		$args->item_srl = $item_srl;
@@ -134,6 +143,7 @@ class archiveModel extends archive {
 	}
 
 	function getCategoryPacakgeCount($module_srl){
+		$count_args = new stdClass();
 		$count_args->module_srl = $module_srl;
 		$output = executeQueryArray('archive.getCategoryPackageCount', $count_args);
 		if(!$output->data) return array();

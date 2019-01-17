@@ -51,6 +51,7 @@ class archiveAdminController extends archive {
 	function procArchiveAdminDelete(){
 		$oModuleController = getController('module');
 
+		$args = new stdClass();
 		$args->module_srl = $module_srl = Context::get('module_srl');
 
 		$output = executeQuery('archive.deleteDependency', $args);
@@ -86,6 +87,7 @@ class archiveAdminController extends archive {
 		$selected_package = $oArchiveModel->getPackage($this->module_srl, $package_srl);
 		if(!$selected_package->package_srl) return $this->makeObject(-1,'msg_invalid_request');
 
+		$args = new stdClass();
 		$args->package_srl = $package_srl;
 		$args->module_srl = $this->module_srl;
 		$output = executeQuery('archive.deletePackage', $args);
